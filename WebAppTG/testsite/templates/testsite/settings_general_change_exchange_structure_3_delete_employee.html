@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <style>
+   .text {
+    text-align:  center;
+   }
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+<div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 18 num %}">Поддержка и обратная связь</a> </button> </div>
+{% block content %}
+        <h1 style="text-align: center;">Увольнение сотрудника</h1>
+
+        <div style="text-align: center;">
+            <h3>Вы подтверждаете удаление пользователя {{ employee_name }} как сотрудника обменника?</h3>
+        </div>
+
+        <div style="text-align:center; "><button style="background-color: lawngreen; font-size: 27px">  <a href="{% url 'general_settings_change_exchange_structure_3_delete_employee_final' employee_name %}">Да</a> </button> <button style="background-color: orangered; font-size: 27px"><a href="{% url 'general_settings_change_exchange_structure_3_menu' %}">Нет</a> </button></div>
+
+
+ {% endblock %}
+ </body>
+</html>

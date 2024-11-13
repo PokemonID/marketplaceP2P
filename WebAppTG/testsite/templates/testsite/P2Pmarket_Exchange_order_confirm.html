@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+{% block content %}
+    <div style="text-align: center">
+        <h1>Подтверждение заявки на обмен</h1>
+        <h3>Сделка по обмену: <span>{{ RequestInfo.Currency_to_sell }} => {{ RequestInfo.Currency_to_buy }}</span> </h3>
+        <h3>Тип цены: <span>{{ RequestInfo.PriceType }} </span> </h3>
+        <h3>Тип перевода отдаваемой валюты и метод оплаты: <span>{{ RequestInfo.Pay_type_sell }}, {{ RequestInfo.FinOfficeFrom }} </span> </h3>
+        <h3>Тип перевода получаемой валюты и метод оплаты: <span>{{ RequestInfo.Pay_type_buy }}, {{ RequestInfo.FinOfficeTo }} </span> </h3>
+        <h3>Место и время сделки: <span>{{ RequestInfo.COUNTRY }}, {{ RequestInfo.CITY }} &nbsp&nbsp|&nbsp&nbsp  {{ RequestInfo.Order_day }}, {{ RequestInfo.Order_time }}</span> </h3>
+        <h3>Способ доставки: <span>{{ RequestInfo.DeliveryType }} </span> </h3>
+        {% if RequestInfo.Send_or_Receive == 'receive' %}
+            <h3>Сумма сделки: <span>{{ RequestInfo.Order_amount }} {{ RequestInfo.Currency_to_buy }}</span> </h3>
+        {% elif RequestInfo.Send_or_Receive == 'send' %}
+            <h3>Сумма сделки: <span>{{ RequestInfo.Order_amount }} {{ RequestInfo.Currency_to_sell }}</span> </h3>
+        {% endif %}
+        {% if RequestInfo.Limit_amount is not None %}
+            <h3>Лимит сделки: <span>{{ RequestInfo.Limit_amount }} {{ RequestInfo.Currency_to_sell }}</span> </h3>
+        {% endif %}
+        {% if RequestInfo.Comment != '' %}
+            <h3>Комментарии к сделке: <span>{{ RequestInfo.Comment }}</span> </h3>
+        {% endif %}
+        <p>Вы подтверждаете заявку на обмен?</div></p>
+        <div style="text-align:center; "><button style="background-color: lawngreen; font-size: 27px">  <a href="{% url 'P2Pmarket_Exchange_order_final' %}">Да</a> </button> <button style="background-color: orangered; font-size: 27px"><a href="{% url 'P2Pmarket_Exchange_order' %}">Нет</a> </button></div>
+
+    </div>
+
+{#    <br>#}
+{#    <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'P2Pmarket' %}">Вернуться к "Покупке на P2P маркете"</a> </button></div>#}
+
+ {% endblock %}
+ </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+<div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 3 0 %}">Поддержка и обратная связь</a> </button> </div>
+<div style="text-align: center">
+    <h1>Введите email в поле ниже</h1>
+
+    {% if error != "" %}
+        <p style="text-align: center;">{{ error }}</p>
+    {% endif %}
+
+    <form  method="post">
+        {% csrf_token %}
+
+        {% for f in form %}
+            <p><div style="text-align: center;"><label  for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</div></p>
+            <div style="text-align: center;" >{{ f.errors }}</div>
+        {% endfor %}
+        <p style="text-align: center; font-family:'Arial'; font-size:14px"><input type="submit" value="Подтвердить email" /></p>
+
+    </form>
+
+    <button style=' font-size: 10px'>  <a href="{% url 'safety' %}">Раздел "Безопасность"</a> </button>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!-- chat/templates/chat/room.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Окно сделки</title>
+    <style>
+        :root {
+          --send-bg: #0B93F6;
+          --send-color: white;
+          --receive-bg: #E5E5EA;
+          --receive-text: black;
+          --page-background: white;
+        }
+        div{
+            background-color: rgb(229, 228, 226, 1);
+        }
+        section {
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+            font-size: 18px;
+            font-weight: normal;
+            width:40%;
+            {#max-width: 450px;#}
+            margin: 50px auto;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--page-background);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .emptystyleleft {
+            text-align: center;
+            {#font-family: none;#}
+            font-size: medium;
+            width:60%;
+            margin: 3px auto;
+            max-width: none;
+            max-height: none;
+            justify-content: center;
+            float:left;
+        }
+
+        .emptystyleright {
+            text-align: center;
+            font-family: none;
+            font-size: medium;
+            width:40%;
+            margin: 3px auto;
+            max-width: none;
+            max-height: none;
+            display: block;
+            justify-content: center;
+        }
+
+        p {
+          max-width: 255px;
+          word-wrap: break-word;
+          margin-bottom: 12px;
+          line-height: 24px;
+          position: relative;
+            padding: 10px 20px;
+          border-radius: 25px;
+
+          &:before, &:after {
+            content: "";
+                position: absolute;
+            bottom: 0;
+            height: 25px;
+          }
+        }
+
+        .send {
+            color: var(--send-color);
+            background: var(--send-bg);
+            align-self: flex-end;
+
+            &:before {
+                right: -7px;
+            width: 20px;
+            background-color: var(--send-bg);
+                border-bottom-left-radius: 16px 14px;
+            }
+
+            &:after {
+                right: -26px;
+            width: 26px;
+            background-color: var(--page-background);
+                border-bottom-left-radius: 10px;
+            }
+        }
+        .receive {
+            background: var(--receive-bg);
+            color: black;
+          align-self: flex-start;
+
+            &:before {
+                left: -7px;
+            width: 20px;
+            background-color: var(--receive-bg);
+                border-bottom-right-radius: 16px 14px;
+            }
+
+            &:after {
+                left: -26px;
+            width: 26px;
+            background-color: var(--page-background);
+                border-bottom-right-radius: 10px;
+            }
+            .foto-previews > img {
+              padding: 10px;
+              width: 270px;
+              height: auto;
+            }
+
+            .fotobox {
+              display: none;
+                position: fixed; top: 0;	left: 0;
+                z-index: 2000;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                background: rgba(0,0,0,0.9);
+            }
+            .fotobox > img {
+                max-width: 90%;
+                max-height: 80%;
+              border: 10px solid #fff;
+              position: absolute; top: 50%; left: 50%;
+              -webkit-transform: translate(-50%, -50%);
+              -ms-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+            }
+            .fotobox:target {
+                outline: none;
+                display: block;
+            }
+                    }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body style="text-align: center" background-color="#ffffff">
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = jQuery.trim(cookies[i]);
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break; // Выходим, как только найдём нужное cookie
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{#    <textarea id="chat-log" cols="100" rows="20"></textarea><br>#}
+<div style="text-align:right; background-color: white">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 45 room_name %}">Поддержка и обратная связь</a> </button> </div>
+
+<section class="emptystyleleft">
+    <h3 style="color:dodgerblue">Сделка №{{ room_name }} </h3>
+    <span style="margin-bottom: 10px"><span style="font-weight:800">Сделка по обмену:</span> {{ Deal_info.ExchangeType }} </span>
+{#    <br style=:800">#}
+    <span style="margin-bottom: 10px"><span style="font-weight:800">Стоимость обмена:</span> {{ Deal_info.SendAmount }} => {{ Deal_info.ReceiveAmount }}  </span>
+    <span style="margin-bottom: 10px"><span style="font-weight:800">Тип перевода и метод оплаты отдаваемой валюты:</span> {{ Deal_info.SendTransferType }} - {{ Deal_info.FinOfficeFrom }} </span>
+    <span style="margin-bottom: 10px"><span style="font-weight:800">Тип перевода и метод оплаты получаемой валюты:</span> {{ Deal_info.ReceiveTransferType }} - {{ Deal_info.FinOfficeTo }} </span>
+    <span style="margin-bottom: 10px"><span style="font-weight:800">Время сделки:</span> {{ Deal_info.OrderDate }}, {{ Deal_info.TimeInterval }} </span>
+    <span style="margin-bottom: 10px"><span style="font-weight:800">Место сделки:</span> {{ Deal_info.Country }}, {{ Deal_info.City }} </span>
+    <span style="margin-bottom: 10px"><span style="font-weight:800">Способ доставки:</span> {{ Deal_info.DeliveryType }}</span>
+    {% if Deal_info.OrderLimit is not None %}
+        <span style="margin-bottom: 10px"><span style="font-weight:800">Лимит сделки:</span> {{ Order.OrderLimit }} {{ Deal_info.SendCurrencyISO }} </span>
+    {% endif %}
+    {% if Deal_info.Comment != '' %}
+        <span style="margin-bottom: 10px"><span style="font-weight:800">Комментарии к сделке:</span> {{ Deal_info.Comment }} </span>
+    {% endif %}
+</section>
+    <section id="chat-log">
+        {% for Message in Messages %}
+            {% if Message.Send_User == send_user and Message.MessageType == 'Text' %}
+                <p class="send">{{ Message.Text }}</p>
+            {% elif Message.Send_User == receive_user and Message.MessageType == 'Text' %}
+                <p class="receive">{{ Message.Text }}</p>
+            {% elif Message.Send_User == send_user and Message.MessageType == 'File' %}
+                <p class="send"><a data-fancybox="gallery" data-src={{Message.Text}}><img style="width:150px" src={{Message.Text}} /> </a></p>
+            {% elif Message.Send_User == receive_user and Message.MessageType == 'File' %}
+                <p class="receive"><a data-fancybox="gallery" data-src={{Message.Text}}><img style="width:150px" src={{Message.Text}} /> </a></p>
+            {% endif %}
+        {% endfor %}
+
+    </section>
+<section class="emptystyleleft">
+    <br>
+</section>
+<section class="emptystyleright">
+    <textarea style="text-align: center;" id="chat-message-input" cols="20" rows="1"></textarea>
+    <input style="align: center;" id="chat-message-submit" type="button" value="Send message">
+<br>
+    <input  type="file" id="filename" />
+</section>
+<br>
+<br>
+    <button style=' font-size: 10px'>  <a href="{% url 'P2Pmarket_Deal_board' %}">Вернуться к сделкам</a> </button>
+<script>
+    function CompressImage (x) {
+        const canvas = document.createElement('canvas');
+        const img = x;
+        var width = img.naturalWidth;
+        var height = img.naturalHeight;
+        const maxheight = 1200;
+        const maxwidth = 1200;
+        if (width > height && (width > maxwidth || height > maxheight)) {
+            height = Math.round(height *= maxwidth / width);
+            width = maxwidth;
+        } else if (width > maxwidth || height > maxheight) {
+            width = Math.round(width *= maxheight / height);
+            height = maxheight;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressedData =  canvas.toDataURL('image/jpeg', 0.7);
+        img.destroy
+        canvas.destroy;
+        width.destroy;
+        height.destroy;
+        chatSocket.send(JSON.stringify({
+            'message': compressedData,
+            'send_user': current_user,
+            'message_type': String('File')
+        }));
+        $.ajax({
+            type: 'POST',
+            url: '/send_file/', // URL обработчика AJAX
+            data: JSON.stringify({
+                'chat_code_1': chat_code, 'send_user_1': current_user,
+                'receive_user_1': receive_user, 'text_1': compressedData
+            }),
+            headers: {
+                'X-CSRFToken': token // Установка CSRF-токена в заголовок
+            },
+            success: function (response) {
+                console.log("Файл успешно отправлен");
+            },
+            error: function (error) {
+                console.error("Ошибка при отправке данных: ", error);
+            },
+        });
+    }
+</script>
+
+
+    <script>
+        var scroll = document.querySelector('#chat-log');
+        scroll.scrollTo(0, scroll.scrollHeight);
+
+        const roomName = "{{ room_name|escapejs }}";
+        const send_user = "{{ send_user|escapejs }}";
+        const receive_user = "{{ receive_user|escapejs }}";
+        const chat_code = "{{ chat_code|escapejs }}";
+        const current_user = "{{ current_user|escapejs }}";
+        const token = getCookie('csrftoken');
+
+        const chatSocket = new WebSocket(
+            'wss://'
+            + 'exchangewebmarket.ru:445'
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.binaryType = "arraybuffer";
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const message = document.createElement("p");
+            if (current_user === data.send_user){
+                message.classList.add('send');
+            }
+            else {
+                message.classList.add('receive');
+            }
+
+            if (String(data.message).indexOf('data:application/pdf;base64') !== -1 || String(data.message).indexOf('data:image/jpeg;base64') !== -1  || String(data.message).indexOf('data:image/png;base64') !== -1 ) {
+                message.insertAdjacentHTML('afterbegin', `<a data-fancybox="gallery" data-src=${data.message}><img style="width:150px" src=${data.message} /> </a>`)
+            }
+            else {
+                message.innerHTML = data.message;
+            }
+
+            document.querySelector('#chat-log').appendChild(message);
+            scroll.scrollTo(0, scroll.scrollHeight);
+
+
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+            console.error(e.code);
+            console.error(e.reason);
+        };
+
+        chatSocket.onerror = function(error) {
+          console.error(error);
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            var file = document.getElementById('filename').files[0];
+            const current_user = "{{ current_user|escapejs }}";
+            const receive_user = "{{ receive_user|escapejs }}";
+            const chat_code = "{{ chat_code|escapejs }}";
+            const message = messageInputDom.value;
+            {#console.log(messageInputDom.value)#}
+            {#console.log(messageInputDom.value === '')#}
+            if (messageInputDom.value !== '') {
+                chatSocket.send(JSON.stringify({
+                    'message': message,
+                    'send_user': current_user,
+                    'message_type': String('Text')
+                }));
+                $.ajax({
+                    type: 'POST',
+                    url: '/send_message/', // URL обработчика AJAX
+                    data: JSON.stringify({
+                        'chat_code_1': chat_code, 'send_user_1': current_user,
+                        'receive_user_1': receive_user, 'text_1': message
+                    }),
+                    headers: {
+                        'X-CSRFToken': token // Установка CSRF-токена в заголовок
+                    },
+                    success: function (response) {
+                        console.log("Текст успешно отправлен");
+                    },
+                    error: function (error) {
+                        console.error("Ошибка при отправке данных: ", error);
+                    },
+                });
+                messageInputDom.value = '';
+            }
+
+            if (typeof file !== 'undefined') {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                {#console.log(file.size)#}
+                reader.onload = function () {
+                    if (String(reader.result).indexOf('data:application/pdf;base64') !== -1 || String(reader.result).indexOf('data:image/jpeg;base64') !== -1 || String(reader.result).indexOf('data:image/png;base64') !== -1) {
+                        if (file.size >= 2097152 && (String(reader.result).indexOf('data:image/jpeg;base64') !== -1 || String(reader.result).indexOf('data:image/png;base64') !== -1)) {
+                            const Img = new Image();
+                            Img.src = reader.result;
+                            CompressImage(Img);
+                            Img.destroy
+                        } else if (file.size >= 2097152 && String(reader.result).indexOf('data:application/pdf;base64') !== -1) {
+                           alert('Размер PDF-файла превышает допустимый (2 МБ)')
+                        }
+                        else {
+                           chatSocket.send(JSON.stringify({
+                                'message': reader.result,
+                                'send_user': current_user,
+                                'message_type': String('File')
+                            }));
+                            $.ajax({
+                                type: 'POST',
+                                url: '/send_file/', // URL обработчика AJAX
+                                data: JSON.stringify({
+                                    'chat_code_1': chat_code, 'send_user_1': current_user,
+                                    'receive_user_1': receive_user, 'text_1': reader.result
+                                }),
+                                headers: {
+                                    'X-CSRFToken': token // Установка CSRF-токена в заголовок
+                                },
+                                success: function (response) {
+                                    console.log("Файл успешно отправлен");
+                                },
+                                error: function (error) {
+                                    console.error("Ошибка при отправке данных: ", error);
+                                },
+                            });
+                        }
+                    } else {
+                        alert('Расширение файла не соотвествует допустимым к отправке (JPEG, PNG, PDF)')
+                    }
+                    reader.onerror = function (error) {
+                        console.log('Error: ', error);
+                    };
+                    document.getElementById('filename').value = "";
+                }
+                reader.destroy
+            }
+        }
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+          Fancybox.bind('[data-fancybox="gallery"]', {
+              // Your custom options for a specific gallery
+          });
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор типа пользователя</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 35 0 %}">Поддержка и обратная связь</a> </button> </div>
+
+        <div style="text-align: center">
+
+                <h1>Выберите тип пользователя в системе</h1>
+                <br>
+
+                {% for usertype in usertypes %}
+                    {% if usertype == 'Клиент' %}
+                        <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'home' 'CLI'%}">Войти как "Клиент"</a> </button>
+                        <br>
+                    {% endif %}
+
+                    {% if usertype == 'Партнер' %}
+                        <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'home' 'PART'%}">Войти как "Партнер"</a> </button>
+                        <br>
+                    {% endif %}
+
+                    {% if usertype == 'Организатор' %}
+                        <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'choose_exchange' 'ORG' %}">Войти как "Организатор"</a> </button>
+                        <br>
+                    {% endif %}
+
+                    {% if usertype == 'Курьер' or usertype == 'Куратор' %}
+                        <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'choose_exchange' 'EMPL' %}">Войти как "Сотрудник обменника"</a> </button>
+                        <br>
+                    {% endif %}
+
+                {% endfor %}
+
+            <button style=" font-size: 10px; margin-bottom:40px">  <a href="{% url 'logout' %}">Вернуться к авторизации</a> </button>
+
+        </div>
+    {% endif %}
+</body>
+</html>

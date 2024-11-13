@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <style>
+   .text {
+    text-align:  center;
+   }
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+{% block content %}
+        <h1 style="text-align: center;">Удаление заявки на обмен</h1>
+
+        <div style="text-align: center;">
+            <h3>Вы подтверждаете удаление заявки №{{ Order.num }} </h3>
+        </div>
+
+        <div style="text-align:center; "><button style="background-color: lawngreen; font-size: 27px">  <a href="{% url 'P2Pmarket_Bulletin_board_delete_final' num %}">Да</a> </button> <button style="background-color: orangered; font-size: 27px"><a href="{% url 'P2Pmarket_Bulletin_board' %}">Нет</a> </button></div>
+
+
+ {% endblock %}
+ </body>
+</html>

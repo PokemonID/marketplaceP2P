@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <style>
+   .text {
+    text-align:  center;
+   }
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+{% if param == 1 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 8 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% elif param == 2 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 15 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% endif %}
+{% block content %}
+        <h1 style="text-align: center;">Настройка орг. структуры обменника</h1>
+        {% if error != "" %}
+        <p style="text-align: center; color:red ;">{{ error }}</p>
+        {% endif %}
+
+        {% if param == 1 %}
+            <form action="{% url 'general_settings_exchange_structure_new_2' %}" method="post">
+        {% elif param == 2 %}
+            <form action="{% url 'general_settings_change_exchange_structure_2' %}" method="post">
+        {% endif %}
+            {% csrf_token %}
+
+            {% for f in form %}
+                <p><div style="text-align: center;"><label  for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</div></p>
+                <div style="text-align: center;" >{{ f.errors }}</div>
+            {% endfor %}
+
+
+            <div style="text-align:center; "><button type="submit">Применить изменения</button></div>
+            <br>
+        </form>
+
+        {% if param2 == 0 %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'delete_org' %}">Вернуться к выбору организатора</a> </button></div>
+        {% elif param2 == 1 %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'general_settings_change_exchange_structure' exch_name%}">Вернуться в меню изменения орг. структуры обменника</a> </button></div>
+        {% endif %}
+ {% endblock %}
+ </body>
+</html>

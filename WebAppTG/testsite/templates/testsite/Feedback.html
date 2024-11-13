@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <style>
+        .text {
+            text-align: center;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    <div style="text-align: center;">
+        <h1 style="text-align: center;">Поддержка и обратная связь</h1>
+        <form action="{% url 'feedback' num num2 %}" method="post">
+            {% csrf_token %}
+            {% if num == 2 or num == 4 or num == 38 %}
+            <p>
+                <label for="{{ form.TG_contact.id_for_label }}">{{ form.TG_contact.label }}:</label>{{ form.TG_contact}}
+            </p>
+            {{ form.TG_contact.errors }}
+            {% endif %}
+
+            <p>
+                <label for="{{ form.Text.id_for_label }}">{{ form.Text.label }}: </label>{{ form.Text }}
+            </p>
+            {{ form.Text.errors }}
+
+            {% if num == 1 %}
+            <p>
+                <label for="{{ form.Rating.id_for_label }}">{{ form.Rating.label }}: </label>{{ form.Rating }}
+            </p>
+            {{ form.Rating.errors }}
+            {% endif %}
+
+            <button type="submit">Отправить</button>
+            <br>
+        </form>
+        <br>
+        {% if num == 1 %}
+        <button style=' font-size: 10px'> <a href="{% url 'home' usertype %}">Главное меню</a> </button>
+        {% elif num == 2 %}
+        <button style=' font-size: 10px'> <a href="{% url 'password_reset' %}">Вернуться к сбросу пароля</a> </button>
+        {% elif num == 3 %}
+        <button style=' font-size: 10px'> <a href="{% url 'email_reset' %}">Вернуться к сбросу email</a> </button>
+        {% elif num == 4 %}
+        <button style=' font-size: 10px'> <a href="{% url 'register' %}">Вернуться к регистрации</a> </button>
+        {% elif num == 5 %}
+        <button style=' font-size: 10px'> <a href="{% url 'register2' %}">Вернуться к персональным данным</a> </button>
+        {% elif num == 6 %}
+        <button style=' font-size: 10px'> <a href="{% url 'register_pccntr' %}">Вернуться к регистрации Центра прибыли и затрат</a> </button>
+        {% elif num == 7 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_exchange_structure_new_1' %}">Вернуться к выбору организатора обменника</a> </button>
+        {% elif num == 8 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_exchange_structure_new_2' %}">Вернуться к настройке орг. структуры обменника</a> </button>
+        {% elif num == 9 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_exchange_structure_new_3' num2 %}">Вернуться к настройке сотрудника обменника</a> </button>
+        {% elif num == 10 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_exchange_deals_new' %}">Вернуться к настройке направлений сделок обменника</a> </button>
+        {% elif num == 11 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_exchange_rate_source_new' %}">Вернуться к настройке источников курсов валют</a> </button>
+        {% elif num == 12 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_exchange_points' %}">Вернуться к настройке обменников</a> </button>
+        {% elif num == 13 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_structure' exch_name %}">Вернуться к настройке орг. структуры обменника</a> </button>
+        {% elif num == 14 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_structure_1' %}">Вернуться к изменению организатора обменника</a> </button>
+        {% elif num == 15 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_structure_2' %}">Вернуться к изменению основной информации обменника</a> </button>
+        {% elif num == 16 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_structure_3_menu' %}">Вернуться к управлению персоналом обменника</a> </button>
+        {% elif num == 17 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_structure_3_employee' emp_name %}">Вернуться к настройке сотрудника обменника</a> </button>
+        {% elif num == 18 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_structure_3_delete_employee' emp_name %}">Вернуться к управлению персоналом обменника</a> </button>
+        {% elif num == 19 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_deals_1' %}">Вернуться к настройке направлений сделок обменника</a> </button>
+        {% elif num == 20 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_deals_2' %}">Вернуться к настройке направлений сделок обменника</a> </button>
+        {% elif num == 21 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_delete_exchange_deals' %}">Вернуться к удалению направлений сделок обменника</a> </button>
+        {% elif num == 22 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_rate_source' %}">Вернуться к настройке источников курсов валют</a> </button>
+        {% elif num == 23 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_exchange_deals_add_new' %}">Вернуться к настройке направлений сделок обменника</a> </button>
+        {% elif num == 24 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_pccntr' %}">Вернуться к настройке Центра прибыли и затрат</a> </button>
+        {% elif num == 25 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_personal' %}">Вернуться к настройке персональных данных пользователя</a> </button>
+        {% elif num == 26 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings' %}">Вернуться к общим настройкам</a> </button>
+        {% elif num == 27 %}
+        <button style=' font-size: 10px'> <a href="{% url 'P2Pmarket' %}">Вернуться к P2P маркету</a> </button>
+        {% elif num == 28 %}
+        <button style=' font-size: 10px'> <a href="{% url 'P2Pmarket_Bulletin_board' %}">Вернуться к объявлениям</a> </button>
+        {% elif num == 29 %}
+        <button style=' font-size: 10px'> <a href="{% url 'P2Pmarket_Exchange_order' %}">Вернуться к оформлению заявки на обмен</a> </button>
+        {% elif num == 30 %}
+        <button style=' font-size: 10px'> <a href="{% url 'P2Pmarket_change_Exchange_order' order_num %}">Вернуться к редактированию заявки на обмен</a> </button>
+        {% elif num == 31 %}
+        <button style=' font-size: 10px'> <a href="{% url 'balance_settings' %}">Вернуться к балансу и бонусам</a> </button>
+        {% elif num == 32 %}
+        <button style=' font-size: 10px'> <a href="{% url 'balance_settings_refill_balance' %}">Вернуться к пополнению баланса</a> </button>
+        {% elif num == 33 %}
+        <button style=' font-size: 10px'> <a href="{% url 'balance_settings_withdraw_funds' %}">Вернуться к выводу средств</a> </button>
+        {% elif num == 34 %}
+        <button style=' font-size: 10px'> <a href="{% url 'safety' %}">Вернуться к безопасности</a> </button>
+        {% elif num == 35 %}
+        <button style=' font-size: 10px'> <a href="{% url 'check_usertype' %}">Вернуться к выбору типа пользователя</a> </button>
+        {% elif num == 36 %}
+        <button style=' font-size: 10px'> <a href="{% url 'choose_exchange' usertype %}">Вернуться к выбору обменника</a> </button>
+        {% elif num == 37 %}
+        <button style=' font-size: 10px'> <a href="{% url 'P2Pmarket_Exchange_request' order_num %}">Вернуться к оформлению предложения на обмен</a> </button>
+        {% elif num == 38 %}
+        <button style=' font-size: 10px'> <a href="{% url 'login' %}">Вернуться к авторизации</a> </button>
+        {% elif num == 39 %}
+        <button style=' font-size: 10px'> <a href="{% url 'Notification' %}">Вернуться к уведомлениям</a> </button>
+        {% elif num == 40 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_exchange_deals_bonus_add_new' %}">Вернуться к настройке скидочной программы</a> </button>
+        {% elif num == 41 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_deals_bonus_1' %}">Вернуться к настройке скидочной программы</a> </button>
+        {% elif num == 42 %}
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_change_exchange_deals_bonus_2' %}">Вернуться к настройке скидочной программы</a> </button>
+        {% elif num == 43 %}
+        <button style=' font-size: 10px'> <a href="{% url 'P2Pmarket_Choose_Request' request_num %}">Вернуться к выбору предложения</a> </button>
+        {% elif num == 44 %}
+        <button style=' font-size: 10px'> <a href="{% url 'P2Pmarket_Deal_board'  %}">Вернуться к сделкам</a> </button>
+        {% elif num == 45 %}
+        <button style=' font-size: 10px'> <a href="{% url 'room' deal_num  %}">Вернуться к сделкам</a> </button>
+        {% endif %}
+        
+
+    </div>
+</body>
+
+</html>

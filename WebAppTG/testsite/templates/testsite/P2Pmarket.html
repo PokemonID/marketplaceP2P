@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Покупка на P2P маркете</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 27 0 %}">Поддержка и обратная связь</a> </button> </div>
+        <div style="text-align: center">
+                <h1>Покупка на P2P маркете</h1>
+                <br>
+
+                {% if usertype != 'CLI' %}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'P2Pmarket_Bulletin_board' %}">Доска объявлений</a> </button>
+                    <br>
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'P2Pmarket_Deal_board' %}">Сделки</a> </button>
+                    <br>
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'success' %}">Создать объявление</a> </button>
+                    <br>
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'success' %}">Пополнение с другого кошелька</a> </button>
+                    <br>
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'success' %}">Админ панель</a> </button>
+                    <br>
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'success' %}">Отчетность</a> </button>
+                    <br>
+                {% else %}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'P2Pmarket_Bulletin_board' %}">Мои объявления</a> </button>
+                    <br>
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'P2Pmarket_Exchange_order' %}">Создать объявление</a> </button>
+                    <br>
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'P2Pmarket_Deal_board' %}">Мои сделки</a> </button>
+                    <br>
+                {% endif %}
+
+                <button style=" font-size: 14px; margin-bottom:40px">  <a href="{% url 'home' usertype %}">Главное меню</a> </button>
+                <br>
+
+
+        </div>
+    {% endif %}
+</body>
+</html>

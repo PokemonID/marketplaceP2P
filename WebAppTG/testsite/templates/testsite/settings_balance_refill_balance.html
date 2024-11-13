@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <style>
+   .text {
+    text-align:  center;
+   }
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+{% block content %}
+<div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 32 0 %}">Поддержка и обратная связь</a> </button> </div>
+    {% if request.user.is_authenticated %}
+        {% if pcc_name == "" %}
+            <h1 style="text-align: center;">Пополнение баланса</h1>
+        {% else %}
+            <h1 style="text-align: center;">Пополнение баланса обменника {{ pcc_name }}</h1>
+        {% endif %}
+        {% if error != "" %}
+            <h4 style="color:red ;text-align: center;">{{ error }}</h4>
+        {% endif %}
+        <form action="{% url 'balance_settings_refill_balance' %}" method="post">
+
+            {% csrf_token %}
+
+            <h3 style="text-align: center;">Блокчейн для перевода</h3>
+            <p style="text-align: center;"> TRC20 </p>
+
+            <h3 style="text-align: center;">Укажите сумму для зачисления</h3>
+            <p><div style="text-align: center;"><label  for="{{ form.balance_Amount.id_for_label }}"> </label>{{ form.balance_Amount }}</div>
+            <div style="text-align: center;" >{{ form.balance_Amount.errors }}</div>
+
+            <h3 style="text-align: center;">Укажите хэш транзакции для проверки</h3>
+            <p><div style="text-align: center;"><label  for="{{ form.Payment_code.id_for_label }}"> </label>{{ form.Payment_code }}</div>
+            <div style="text-align: center;" >{{ form.Payment_code.errors }}</div>
+            <br>
+
+            <div style="text-align:center; "><button type="submit">Отправить заявку на проверку</button></div>
+
+            <br>
+        </form>
+
+        <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'balance_settings' %}">Вернуться к "Балансу и бонусам"</a> </button></div>
+    {% endif %}
+ {% endblock %}
+ </body>
+</html>

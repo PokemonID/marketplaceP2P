@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <style>
+       .box {
+              display: grid;
+              justify-content: right;
+            }
+  </style>
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+{% block content %}
+{% if param == 0 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 29 0 %}">Поддержка и обратная связь</a> </button>
+{% elif param == 1 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 30 num %}">Поддержка и обратная связь</a> </button>
+{% endif %}
+
+    {% if request.user.is_authenticated %}
+        <p>Баланс: {{ balance }} USDT</div>
+
+        <h1><div style="text-align: center; ">Оформление заявки на обмен</div></h1>
+
+        {% if error != "" %}
+            <h4 style="color:red ;text-align: center;">{{ error }}</h4>
+        {% endif %}
+
+        {% if error2 != "" %}
+            <h4 style="color:red ;text-align: center;">{{ error2 }}</h4>
+        {% endif %}
+
+        {% if error3 != "" %}
+            <h4 style="color:red ;text-align: center;">{{ error3 }}</h4>
+        {% endif %}
+
+        {% if error4 != "" %}
+            <h4 style="color:red ;text-align: center;">{{ error4 }}</h4>
+        {% endif %}
+
+        {% if error5 != "" %}
+            <h4 style="color:red ;text-align: center;">{{ error5 }}</h4>
+        {% endif %}
+
+        {% if param == 0 %}
+            <form action="{% url 'P2Pmarket_Exchange_order_confirm' %}" method="post">
+        {% elif param == 1 %}
+            <form action="{% url 'P2Pmarket_change_Exchange_order' num %}" method="post">
+        {% endif %}
+
+            {% csrf_token %}
+
+            <h4><div style="text-align: center;"> Выберите актив к покупке и контрактив к продаже:</div></h4>
+            <p><div style="text-align: center;"><label  for="{{ form.Currency_to_sell.id_for_label }}"> </label>{{ form.Currency_to_sell }} &nbsp=>&nbsp <label  for="{{ form.Currency_to_buy.id_for_label }}"> </label>{{ form.Currency_to_buy }}</div></p>
+            <div style="text-align: center;" >{{ form.Currency_to_buy.errors }}</div>
+            <div style="text-align: center;" >{{ form.Currency_to_sell.errors }}</div>
+
+            <h4><div style="text-align: center;"> Выберите тип цены: </div></h4>
+            <p><div style="text-align: center;"><label  for="{{ form.PriceType.id_for_label }}"> </label>{{ form.PriceType }}</div></p>
+                <div style="text-align: center;" >{{ form.PriceType.errors }}</div>
+
+            <h4><div style="text-align: center;"> Выберите тип перевода отдаваемой валюты и метод оплаты: </div></h4>
+            <p><div style="text-align: center;"><label  for="{{ form.Pay_type_sell.id_for_label }}"> </label>{{ form.Pay_type_sell }}</div></p>
+                <div style="text-align: center;" >{{ form.Pay_type_sell.errors }}</div>
+            <p><div style="text-align: center;"><label  for="{{ form.FinOfficeFrom.id_for_label }}"> </label>{{ form.FinOfficeFrom }}</div></p>
+                <div style="text-align: center;" >{{ form.FinOfficeFrom.errors }}</div>
+
+            <h4><div style="text-align: center;"> Выберите тип перевода получаемой валюты и метод оплаты: </div></h4>
+            <p><div style="text-align: center;"><label  for="{{ form.Pay_type_buy.id_for_label }}"> </label>{{ form.Pay_type_buy }}</div></p>
+                <div style="text-align: center;" >{{ form.Pay_type_buy.errors }}</div>
+            <p><div style="text-align: center;"><label  for="{{ form.FinOfficeTo.id_for_label }}"> </label>{{ form.FinOfficeTo }}</div></p>
+                <div style="text-align: center;" >{{ form.FinOfficeTo.errors }}</div>
+
+            <h4><div style="text-align: center;"> Выберите место и время сделки: </div></h4>
+            <p style="text-align: center;"> {{ Country }}</p>
+            <p><div style="text-align: center;"><label  for="{{ form.CITY.id_for_label }}"> </label>{{ form.CITY }}</div></p>
+                <div style="text-align: center;" >{{ form.CITY.errors }}</div>
+
+
+            <p style="text-align: center;"> {{ Date }}</p>
+            <div style="text-align: center;"><label  for="{{ form.Order_time.id_for_label }}"> </label>{{ form.Order_time }}</div>
+
+{#                <div style="text-align: center;" >{{ form.Order_time.errors }}</div>#}
+
+
+            <h4><div style="text-align: center;"> Выберите способ доставки: </div></h4>
+            <p><div style="text-align: center;"><label  for="{{ form.DeliveryType.id_for_label }}"> </label>{{ form.DeliveryType }}</div></p>
+                <div style="text-align: center;" >{{ form.DeliveryType.errors }}</div>
+
+            <h4><div style="text-align: center;"> Введите сумму сделки ( <label  for="{{ form.Send_or_Receive.id_for_label }}"> </label>{{ form.Send_or_Receive }} ):</div></h4>
+                <div style="text-align: center;" >{{ form.Send_or_Receive.errors }}</div>
+
+            <p><div style="text-align: center;"><label  for="{{ form.Order_amount.id_for_label }}"> </label>{{ form.Order_amount }}</div></p>
+                <div style="text-align: center;" >{{ form.Order_amount.errors }}</div>
+
+            <h4><div style="text-align: center;"> Введите лимит сделки (макс. возможное кол-во продаваемой валюты, не обязательно): </div></h4>
+            <p><div style="text-align: center;"><label  for="{{ form.Limit_amount.id_for_label }}"> </label>{{ form.Limit_amount }}</div></p>
+                <div style="text-align: center;" >{{ form.Limit_amount.errors }}</div>
+
+            <h4><div style="text-align: center;"> Укажите комментарии к сделке (не обязательно): </div></h4>
+            <p><div style="text-align: center;"><label  for="{{ form.Comment.id_for_label }}"> </label>{{ form.Comment }}</div></p>
+                <div style="text-align: center;" >{{ form.Comment.errors }}</div>
+
+            <div style="text-align:center; "><button type="submit">Отправить заявку на проверку</button></div>
+            <br>
+
+        </form>
+
+        {% if param == 0 %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'P2Pmarket' %}">Вернуться к "Покупке на P2P маркете"</a> </button></div>
+        {% elif param == 1 %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'P2Pmarket_Bulletin_board' %}">Вернуться к "Моим объявлениям"</a> </button></div>
+        {% endif %}
+    {% endif %}
+ {% endblock %}
+ </body>
+</html>

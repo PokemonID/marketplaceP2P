@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Настройки орг.структуры обменника</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; "> <button style=' font-size: 10px'> <a
+                href="{% url 'feedback' 13 exch_code %}">Поддержка и
+                обратная связь</a> </button> </div>
+    <div style="text-align: center">
+        <h1>Настройка орг. структуры обменника {{ exch_name }}</h1>
+        <br>
+
+        {% if param == 0 %}
+        <button style=" font-size: 20px; margin-bottom:40px"> <a
+                href="{% url 'general_settings_change_exchange_structure_1' %}">Изменить организатора обменника</a>
+        </button>
+        <br>
+        {% endif %}
+
+
+        <button style=" font-size: 20px; margin-bottom:40px"> <a
+                href="{% url 'general_settings_change_exchange_structure_2' %}">Изменение основной информации
+                обменника</a> </button>
+        <br>
+
+        <button style=" font-size: 20px; margin-bottom:40px"> <a
+                href="{% url 'general_settings_change_exchange_structure_3_menu' %}">Управление персоналом обменника</a>
+        </button>
+        <br>
+
+
+        <button style=" font-size: 20px; margin-bottom:40px"> <a
+                href="{% url 'general_settings_exchange_deals_add_new' %}">Добавить направления сделок и нормы прибыльности</a>
+        </button>
+        <br>
+
+        <button style=' font-size: 20px; margin-bottom:40px'>  <a
+                href="{% url 'general_settings_change_exchange_deals_1' %}">Изменить направления сделок и нормы прибыльности</a>
+        </button>
+        <br>
+
+        <button style=' font-size: 20px; margin-bottom:40px'>  <a
+                href="{% url 'general_settings_delete_exchange_deals' %}">Удалить направления сделок и нормы прибыльности</a>
+        </button>
+        <br>
+
+
+        <button style=' font-size: 10px'> <a href="{% url 'general_settings_exchange_points' %}">Вернуться к выбору обменника</a> </button>
+    </div>
+
+    </div>
+    {% endif %}
+</body>
+
+</html>

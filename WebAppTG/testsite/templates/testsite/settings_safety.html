@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Настройки безопасности</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 34 0 %}">Поддержка и обратная связь</a> </button> </div>
+
+    <div style="text-align: center">
+        <h1>Безопасность</h1>
+
+        <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'password_reset' %}">Сменить пароль</a> </button>
+        <br>
+        <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'email_reset' %}">Сменить email</a> </button>
+        <br>
+        <button style=" font-size: 14px">  <a href="{% url 'home' usertype %}">Главное меню</a> </button>
+    </div>
+</body>
+</html>

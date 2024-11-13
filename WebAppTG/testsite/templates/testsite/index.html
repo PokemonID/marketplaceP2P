@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <style>
+        .circle {
+          display: inline-block;
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          border-radius: 50%;
+          border: 2px solid red;
+          background-color: red;
+          color: white;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+        <div style="text-align: center">
+            {% if activity_parameter == 1 %}
+                <h1>Личный кабинет пользователя</h1>
+                <p> Привет, <span style="font-weight:800">{{ username }}</span></p>
+                <p> Вы вошли как <span style="font-weight:800">{{ usertype2 }}</span></p>
+                {% if usertype == 'PART' %}
+                    <p> Наименование Центра прибыли и затрат - <span style="font-weight:800">{{ PCCNTR_name }}</span></p>
+                {% elif usertype == 'ORG' or usertype == 'EMPL'%}
+                    <p> Наименование Центра прибыли и затрат  - <span style="font-weight:800">{{ PCCNTR_name }}</span></p>
+                    <p> Наименование обменника  - <span style="font-weight:800">{{ ExchangePoint_name }}</span></p>
+
+                {% endif %}
+
+                <br>
+
+                <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'P2Pmarket' %}">Покупка на P2P маркете</a> </button>
+                <br>
+
+                {% if usertype == 'PART' or usertype == 'ORG'%}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'general_settings' %}">Общие настройки</a> </button>
+                    <br>
+                {% else %}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'general_settings_personal' %}">Общие настройки</a> </button>
+                    <br>
+                {% endif %}
+
+{#                {% if usertype == 'PART' or usertype == 'ORG' or usertype == 'EMPL'%}#}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'balance_settings' %}">Баланс и бонусы</a> </button>
+                    <br>
+{#                {% endif %}#}
+
+                <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'safety' %}">Безопасность</a> </button>
+                <br>
+                <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'success' %}">Реферальная программа</a> </button>
+                <br>
+                {% if unread_notifications == 0 %}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'Notification' %}">Уведомления</a> </button>
+                {% else %}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'Notification' %}">Уведомления</a> </button> <div class="circle">{{ unread_notifications }}</div>
+                {% endif %}
+                <br>
+
+                {% if usertype == 'PART' or usertype == 'ORG' %}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'success' %}">Реквизиты осуществления платежей</a> </button>
+                    <br>
+                {% endif %}
+
+                <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'feedback' 1 0 %}">Поддержка и обратная связь</a> </button>
+                <br>
+
+                {% if param_page == 1 %}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'check_usertype' %}">Сменить тип пользователя</a> </button>
+                    <br>
+                {% endif %}
+
+{#                <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'room' 'lobby' %}">Чат между клиентом и обменником (тест)</a> </button>#}
+{#                <br>#}
+
+                <button style=" font-size: 14px; margin-bottom:40px">  <a href="{% url 'logout' %}">Выход</a> </button>
+                <br>
+
+
+            {% elif activity_parameter == 0 %}
+                <h1>Пользователь  {{ request.user }} заблокирован</h1>
+            {% elif activity_parameter == 2 %}
+                <h1>Пользователь  {{ request.user }}  временно заблокирован</h1>
+            {% endif %}
+        </div>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор обменника</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 36 0 %}">Поддержка и обратная связь</a> </button> </div>
+
+        <div style="text-align: center">
+
+                <h1>Выберите обменник</h1>
+                <br>
+
+                {% for EP in EPs_info %}
+
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'home' EP %}">{{ EP }}</a> </button>
+                    <br>
+
+
+                {% endfor %}
+
+            <button style=" font-size: 10px; margin-bottom:40px">  <a href="{% url 'check_usertype' %}">Вернуться к выбору типа пользователя</a> </button>
+        </div>
+    {% endif %}
+</body>
+</html>

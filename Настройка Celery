@@ -1,0 +1,5 @@
+Инструкция для включения celery:
+1) Запустить в 1 окне "redis-server"
+2) Во 2 окне запустить веб-сайт "Python manage.py runserver"
+3) В 3-ем окне запустить celery "celery -A WebAppTG worker -l info"
+4) В 4-ом окне подать в celery функцию для повтора "python -m celery -A WebAppTG beat -l info"

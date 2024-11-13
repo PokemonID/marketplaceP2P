@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 31 0 %}">Поддержка и обратная связь</a> </button> </div>
+        <div style="text-align: center">
+            <h1>Баланс и бонусы</h1>
+
+
+
+            {% if ContactType != "CLI" %}
+                {% if param == 0 %}
+                    <h2>Информация об обменнике</h2>
+                {% else %}
+                    <h2>Информация об обменниках</h2>
+                {% endif %}
+
+                <table style=" margin-left: auto; margin-right: auto; border-collapse: collapse; border: 1px solid #000000;">
+                <thead>
+                    <tr style="border-collapse: collapse; border: 1px solid #000000;">
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">Наименование Центра прибыли и затрат</th>
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">Общий баланс</th>
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">Резерв по сделкам</th>
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">Доступно</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for PCCNTR in PCCNTRs %}
+                    <tr style="border-collapse: collapse; border: 1px solid #000000;">
+                        <th style="border-collapse: collapse; border: 1px solid #000000;">{{ PCCNTR.PCCNTR_name }}</th>
+                        <th style="border-collapse: collapse; border: 1px solid #000000;">{{ PCCNTR.Balance }} USDT</th>
+                        <th style="border-collapse: collapse; border: 1px solid #000000;">{{ PCCNTR.Reserve }} USDT</th>
+                        <th style="border-collapse: collapse; border: 1px solid #000000;">{{ PCCNTR.Available }} USDT</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+                <br>
+                {% if ContactType == "PART" %}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'balance_settings_refill_balance' %}">Пополнить баланс обменника</a> </button>
+                    <br>
+                    {% if param2 != 0 %}
+                        <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'balance_settings_withdraw_funds' %}">Вывести средства</a> </button>
+                        <br>
+                    {% endif %}
+                {% endif %}
+
+            {% else %}
+                <h2>Информация о балансе</h2>
+
+                <table style=" margin-left: auto; margin-right: auto;">
+                <thead>
+                    <tr style="border-collapse: collapse; border: 1px solid #000000;">
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">ТГ-аккаунт</th>
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">Баланс</th>
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">Бонус</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {% for user in User_info %}
+                    <tr style="border-collapse: collapse; border: 1px solid #000000;">
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">{{ user.TG_Contact }}</th>
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">{{ user.balanceFull }} USDT</th>
+                      <th style="border-collapse: collapse; border: 1px solid #000000;">{{ user.bonusPercentFull }} %</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+                <br>
+
+                <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'balance_settings_refill_balance' %}">Пополнить баланс</a> </button>
+                <br>
+                {% if param2 != 0 %}
+                    <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'balance_settings_withdraw_funds' %}">Вывести средства</a> </button>
+                    <br>
+                {% endif %}
+            {% endif %}
+
+            {% if ContactType == "PART" or ContactType == "ORG" %}
+                <button style=' font-size: 20px; margin-bottom:40px'>  <a
+                    href="{% url 'general_settings_change_exchange_deals_bonus_2' %}">Изменить бонусы по направлениям сделки</a>
+                </button>
+                <br>
+            {% endif %}
+
+            {% if ContactType == "PART" or ContactType == "CLI"%}
+                <button style=' font-size: 10px'>  <a href="{% url 'home' usertype %}">Главное меню</a> </button></div>
+            {% else %}
+                <button style=' font-size: 10px'>  <a href="{% url 'home' ExchangeName %}">Главное меню</a> </button></div>
+            {% endif %}
+
+        </div>
+    {% endif %}
+</body>
+</html>

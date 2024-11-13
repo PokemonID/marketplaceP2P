@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <style>
+   .text {
+    text-align:  center;
+   }
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+{% block content %}
+    {% if param == 0 %}
+        <h1 style="text-align: center;">Настройка направлений сделок</h1>
+    {% elif param == 1 %}
+        <h1 style="text-align: center;">Настройка скидок обменника</h1>
+    {% endif %}
+            <h3 style="text-align: center;">Выбранные обменники</h3>
+            <p style="text-align: center;">{{ EP }}</p>
+
+            <h3 style="text-align: center;">Выбранные направления сделок</h3>
+            <p style="text-align: center;">{{ Deals }}</p>
+
+
+        <div style="text-align: center;">
+            <h3>Вы подтверждаете выбор указанных выше направлений сделок?</h3>
+        </div>
+
+        {% if param == 0 %}
+            <div style="text-align:center; "><button style="background-color: lawngreen; font-size: 27px">  <a href="{% url 'general_settings_delete_exchange_deals_final' %}">Да</a> </button> <button style="background-color: orangered; font-size: 27px"><a href="{% url 'general_settings_delete_exchange_deals' %}">Нет</a> </button></div>
+        {% elif param == 1 %}
+            <div style="text-align:center; "><button style="background-color: lawngreen; font-size: 27px">  <a href="{% url 'general_settings_delete_exchange_deals_bonus_final' %}">Да</a> </button> <button style="background-color: orangered; font-size: 27px"><a href="{% url 'general_settings_delete_exchange_deals_bonus' %}">Нет</a> </button></div>
+        {% endif %}
+{% endblock %}
+ </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 16 0 %}">Поддержка и обратная связь</a> </button> </div>
+    <div style="text-align: center;" >
+        <h1>Управление персоналом обменника</h1>
+        <p>Чтобы уволить сотрудника, нажмите кнопку справа от Телеграмм аккаунта сотрудника</p>
+        {% for location in Locations %}
+            <h3>{{ location }}</h3>
+
+            {% for k, v in EP_employee.items %}
+                {% if v.Location == location %}
+                    <button style=' font-size: 20px'>  <a href="{% url 'general_settings_change_exchange_structure_3_employee' k %}">{{ k }}</a></button> <button style=' font-size: 10px; margin: 0px 0px 0px 10px'>  <a href="{% url 'general_settings_change_exchange_structure_3_delete_employee' k %}">Уволить сотрудника</a></button>
+                    <br>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <br>
+
+
+        <button style=' font-size: 10px; margin-bottom:20px'>  <a href="{% url 'general_settings_exchange_structure_new_3' 0 %}">Добавить нового сотрудника</a></button>
+        <br>
+
+        <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'general_settings_change_exchange_structure' exch_name %}">Вернуться в меню изменения орг. структуры обменника</a> </button></div>
+    </div>
+
+</body>
+</html>

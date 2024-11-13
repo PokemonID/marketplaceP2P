@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <style>
+   .text {
+    text-align:  center;
+   }
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+ {% if param == 1 %}
+ <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 9 num %}">Поддержка и обратная связь</a> </button> </div>
+{% elif param == 2 %}
+ <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 17 num %}">Поддержка и обратная связь</a> </button> </div>
+{% endif %}
+ {% block content %}
+        <h1 style="text-align: center;">Настройка орг. структуры обменника</h1>
+        {% if error != "" %}
+        <p style="text-align: center; color:red ;">{{ error }}</p>
+        {% endif %}
+
+        {% if param == 1 %}
+            <form action="{% url 'general_settings_exchange_structure_new_3' num %}" method="post">
+        {% elif param == 2 %}
+            <form action="{% url 'general_settings_change_exchange_structure_3_employee' employee_name %}" method="post">
+        {% endif %}
+            {% csrf_token %}
+
+
+            {% if param == 1 %}
+                <h3 style="text-align: center;">Введите аккаунт в Телеграмме (например, @1)</h3>
+                <p><div style="text-align: center;"><label  for="{{ form.chosen_user.id_for_label }}"> </label>{{ form.chosen_user }}</div>
+                <div style="text-align: center;" >{{ form.chosen_user.errors }}</div>
+                <br>
+            {% elif param == 2 %}
+                <h3 style="text-align: center;">Телеграмм аккаунт сотрудника</h3>
+                <p style="text-align: center;">{{ employee_name }}</p>
+            {% endif %}
+
+            {% if param == 1 %}
+                <h3 style="text-align: center;">Выберите страну и город, к которым будет привязан сотрудник</h3>
+            {% elif param == 2 %}
+                <h3 style="text-align: center;">Cтрана и город, к которым привязан сотрудник</h3>
+            {% endif %}
+
+
+                <p><div style="text-align: center;"><label  for="{{ form.ExchPCountries.id_for_label }}">{{ form.ExchPCountries.label }}: </label>{{ form.ExchPCountries }}</div>
+                <div style="text-align: center;" >{{ form.ExchPCountries.errors }}</div>
+
+                <p><div style="text-align: center;"><label  for="{{ form.ExchPCities.id_for_label }}">{{ form.ExchPCities.label }}: </label>{{ form.ExchPCities }}</div>
+{#                <div style="text-align: center;" >{{ form.ExchPCities.errors }}</div>#}
+                <script>
+                    document.querySelector('select[multiple]').addEventListener('mousedown', (e) => {
+                      if (e.target.tagName === 'OPTION') {
+                        e.preventDefault(); // Отменяем действие по умолчанию
+                        const option = e.target;
+                        option.selected = !option.selected; // Инвертируем выбранный элемент
+                        e.target.parentNode.dispatchEvent(new Event('change')); // Генерируем событие изменения
+                      }
+                    });
+                </script>
+            {% if param == 1 %}
+                <h3 style="text-align: center;">Выберите должность(-и) сотрудника</h3>
+            {% elif param == 2 %}
+                <h3 style="text-align: center;">Должность(-и) сотрудника</h3>
+            {% endif %}
+
+                <p><div style="text-align: center;"><label  for="{{ form.ExchPOfficeCourier.id_for_label }}"> </label>{{ form.ExchPOfficeCourier }}</div>
+                <div style="text-align: center;" >{{ form.ExchPOfficeCourier.errors }}</div>
+
+            <br>
+
+            {% if param == 1 %}
+                <h3 style="text-align: center;">Выберите дни и время работы сотрудника в будние дни</h3>
+            {% elif param == 2 %}
+                <h3 style="text-align: center;">Дни и время работы сотрудника в будние дни</h3>
+            {% endif %}
+
+
+                <p><div style="text-align: center;"><label  for="{{ form.Mon.id_for_label }}">{{ form.Mon.label }}: </label>{{ form.Mon }}</div>
+                <div style="text-align: center;" >{{ form.Mon.errors }}</div>
+
+                <p><div style="text-align: center;"><label  for="{{ form.Tue.id_for_label }}">{{ form.Tue.label }}: </label>{{ form.Tue }}</div>
+                <div style="text-align: center;" >{{ form.Tue.errors }}</div>
+
+                <p><div style="text-align: center;"><label  for="{{ form.Wed.id_for_label }}">{{ form.Wed.label }}: </label>{{ form.Wed }}</div>
+                <div style="text-align: center;" >{{ form.Wed.errors }}</div>
+
+                <p><div style="text-align: center;"><label  for="{{ form.Thu.id_for_label }}">{{ form.Thu.label }}: </label>{{ form.Thu }}</div>
+                <div style="text-align: center;" >{{ form.Thu.errors }}</div>
+
+                <p><div style="text-align: center;"><label  for="{{ form.Fri.id_for_label }}">{{ form.Fri.label }}: </label>{{ form.Fri }}</div>
+                <div style="text-align: center;" >{{ form.Fri.errors }}</div>
+
+                <p><div style="text-align: center;"><label  for="{{ form.Working_hours_Open_Working_days.id_for_label }}">{{ form.Working_hours_Open_Working_days.label }} </label>{{ form.Working_hours_Open_Working_days }}
+                <label  for="{{ form.Working_hours_Close_Working_days.id_for_label }}"> {{ form.Working_hours_Close_Working_days.label }} </label>{{ form.Working_hours_Close_Working_days }}</div>
+                <div style="text-align: center;" >{{ form.Working_hours_Open_Working_days.errors }}</div>
+                <div style="text-align: center;" >{{ form.Working_hours_Close_Working_days.errors }}</div>
+
+            <br>
+
+            {% if param == 1 %}
+                <h3 style="text-align: center;">Выберите дни и время работы сотрудника в выходные дни</h3>
+            {% elif param == 2 %}
+                <h3 style="text-align: center;">Дни и время работы сотрудника в выходные дни</h3>
+            {% endif %}
+
+                <p><div style="text-align: center;"><label  for="{{ form.Sat.id_for_label }}">{{ form.Sat.label }}: </label>{{ form.Sat }}</div>
+                <div style="text-align: center;" >{{ form.Sat.errors }}</div>
+
+                <p><div style="text-align: center;"><label  for="{{ form.Sun.id_for_label }}">{{ form.Sun.label }}: </label>{{ form.Sun }}</div>
+                <div style="text-align: center;" >{{ form.Sun.errors }}</div>
+
+                <p><div style="text-align: center;"><label  for="{{ form.Working_hours_Open_Weekends.id_for_label }}">{{ form.Working_hours_Open_Weekends.label }} </label>{{ form.Working_hours_Open_Weekends }}
+                <label  for="{{ form.Working_hours_Close_Weekends.id_for_label }}">{{ form.Working_hours_Close_Weekends.label }} </label>{{ form.Working_hours_Close_Weekends }}</div>
+                <div style="text-align: center;" >{{ form.Working_hours_Open_Weekends.errors }}</div>
+                <div style="text-align: center;" >{{ form.Working_hours_Close_Weekends.errors }}</div>
+
+            <br>
+
+            {% if param == 1 %}
+                <h3 style="text-align: center;">Укажите адрес обменника</h3>
+            {% elif param == 2 %}
+                <h3 style="text-align: center;">Адрес обменника</h3>
+            {% endif %}
+
+
+                <p><div style="text-align: center;"><label  for="{{ form.ExchPAddress.id_for_label }}"> </label>{{ form.ExchPAddress }}</div>
+                <div style="text-align: center;" >{{ form.ExchPAddress.errors }}</div>
+
+            <br>
+
+            {% if param == 1 %}
+                <div style="text-align:center; "><button type="submit">Проверить аккаунт в системе</button></div>
+            {% elif param == 2 %}
+                <div style="text-align:center; "><button type="submit">Применить изменения</button></div>
+            {% endif %}
+
+            <br>
+        </form>
+
+        {% if param == 1 %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'delete_exch' %}">Вернуться к настройке орг. структуры обменника</a> </button></div>
+        {% elif param == 2 %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'general_settings_change_exchange_structure_3_menu' %}">Вернуться в меню выбора сотрудника обменника</a> </button></div>
+        {% endif %}
+ {% endblock %}
+ </body>
+</html>

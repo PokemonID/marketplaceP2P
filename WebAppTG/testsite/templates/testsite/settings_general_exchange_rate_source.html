@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+{% if param == 0 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 11 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% else %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 22 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% endif %}
+
+<h1 style="text-align: center;">Настройка источников курсов валют</h1>
+{% if param == 0 %}
+    <h3 style="text-align: center;">Выберите источник для каждого направления сделки</h3>
+{% endif %}
+
+
+    {% if error != "" %}
+    <p style="text-align: center; color:red">{{ error }}</p>
+    {% endif %}
+
+<br>
+
+{% if param == 0 %}
+    <form action="{% url 'general_settings_exchange_rate_source_new' %}" method="post">
+{% elif param == 1 %}
+    <form action="{% url 'general_settings_change_exchange_rate_source' %}" method="post">
+{% endif %}
+
+
+        {% csrf_token %}
+
+        <div style="text-align: center;">
+        <table style="  margin-left: auto; margin-right: auto;">
+            <thead >
+                <tr>
+                  <th>Направление сделки</th>
+                  <th>Биржа</th>
+                </tr>
+            </thead>
+            <tbody >
+            {% if num == 1 or num == 2 or num == 3 or num == 4 or num == 5 %}
+                <tr>
+                    <th>{{ Opertypes.N_0 }} </th>
+                    <th><label  for="{{ form.chosen_quote_1.id_for_label }}"> </label>{{ form.chosen_quote_1 }}</th>  {#  <label  for="{{ form.chosen_bank_1.id_for_label }}">&nbsp&nbsp </label>{{ form.chosen_bank_1 }}</p> #}
+                    <div style="text-align: center;" >{{ form.chosen_quote_1.errors }}</div>
+                </tr>
+                {#                <div style="text-align: center;" >{{ form.chosen_bank_1.errors }}</div>#}
+            {% endif %}
+
+            {% if num == 2 or num == 3 or num == 4 or num == 5 %}
+                <tr>
+                    <th>{{ Opertypes.N_1 }}</th>
+                    <th><label  for="{{ form.chosen_quote_2.id_for_label }}"></label>{{ form.chosen_quote_2 }}</th>  {#  <label  for="{{ form.chosen_bank_2.id_for_label }}">&nbsp&nbsp</label>{{ form.chosen_bank_2 }}</p> #}
+                    <div style="text-align: center;" >{{ form.chosen_quote_2.errors }}</div>
+                </tr>
+{#                <div style="text-align: center;" >{{ form.chosen_bank_2.errors }}</div>#}
+            {% endif %}
+
+            {% if num == 3 or num == 4 or num == 5 %}
+                <tr>
+                    <th>{{ Opertypes.N_2 }}</th>
+                    <th> <label  for="{{ form.chosen_quote_3.id_for_label }}"></label>{{ form.chosen_quote_3 }}</th>  {# <label  for="{{ form.chosen_bank_3.id_for_label }}">&nbsp&nbsp</label>{{ form.chosen_bank_3 }}</p> #}
+                    <div style="text-align: center;" >{{ form.chosen_quote_3.errors }}</div>
+                </tr>
+{#                <div style="text-align: center;" >{{ form.chosen_bank_3.errors }}</div>#}
+            {% endif %}
+
+            {% if num == 4 or num == 5 %}
+                <tr>
+                    <th>{{ Opertypes.N_3 }}</th>
+                    <th> <label  for="{{ form.chosen_quote_4.id_for_label }}"></label>{{ form.chosen_quote_4 }}</th>  {# <label  for="{{ form.chosen_bank_4.id_for_label }}">&nbsp&nbsp</label>{{ form.chosen_bank_4 }}</p> #}
+                    <div style="text-align: center;" >{{ form.chosen_quote_4.errors }}</div>
+                </tr>
+{#                <div style="text-align: center;" >{{ form.chosen_bank_4.errors }}</div>#}
+            {% endif %}
+
+            {% if num == 5 %}
+                <tr>
+                    <th> {{ Opertypes.N_4 }}</th>
+                    <th><label  for="{{ form.chosen_quote_5.id_for_label }}"></label>{{ form.chosen_quote_5 }}</th> {#     <label  for="{{ form.chosen_bank_5.id_for_label }}">&nbsp&nbsp</label>{{ form.chosen_bank_5 }}</p> #}
+                    <div style="text-align: center;" >{{ form.chosen_quote_5.errors }}</div>
+                </tr>
+{#                <div style="text-align: center;" >{{ form.chosen_bank_5.errors }}</div>#}
+            {% endif %}
+            </tbody>
+
+        </table>
+        </div>
+
+        <br>
+        <div style="text-align:center; "><button type="submit">Применить изменения</button></div>
+        <br>
+        </form>
+
+        {% if param == 0 %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'delete_exch_operations' exch_name %}">Вернуться к настройке направлений сделок обменника</a> </button></div>
+        {% elif param == 1 %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'general_settings_exchange_points' %}">Вернуться к выбору обменника</a> </button></div>
+        {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if param2 == 0 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 19 0 %}">Поддержка и обратная связь</a> </button> </div>
+   {% elif param2 == 1 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 21 0 %}">Поддержка и обратная связь</a> </button> </div>
+   {% elif param2 == 2 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 41 0 %}">Поддержка и обратная связь</a> </button> </div>
+   {% elif param2 == 3 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 43 0 %}">Поддержка и обратная связь</a> </button> </div>
+   {% endif %}
+
+
+        {% if param2 == 0 or param2 == 1 %}
+            <h1 style="text-align: center;">Настройка направлений сделок</h1>
+        {% else %}
+            <h1 style="text-align: center;">Настройка скидок обменника</h1>
+        {% endif %}
+
+
+        {% if error != "" %}
+        <p style="text-align: center; color:red">{{ error }}</p>
+        {% endif %}
+
+        {% if param2 == 0 or param2 == 1 %}
+            <h3 style="text-align: center;">Список направлений сделок и обменников, где они проводятся</h3>
+        {% else %}
+            <h3 style="text-align: center;">Список направлений сделок и обменников, где применяется скидочная программа</h3>
+        {% endif %}
+
+
+
+        {% for k, v in EP_Deals.items %}
+            <p style="text-align: center;"><span style="font-weight:800">{{ k }}</span> - {{ v }}</p>
+        {% endfor %}
+
+        {% if param2 == 0 %}
+            <form action="{% url 'general_settings_change_exchange_deals_1' %}" method="post">
+        {% elif param2 == 1 %}
+            <form action="{% url 'general_settings_delete_exchange_deals' %}" method="post">
+        {% elif param2 == 2 %}
+            <form action="{% url 'general_settings_change_exchange_deals_bonus_1' %}" method="post">
+        {% elif param2 == 3 %}
+            <form action="{% url 'general_settings_delete_exchange_deals_bonus' %}" method="post">
+        {% endif %}
+            {% csrf_token %}
+            <div style="text-align: center;">
+
+                <h3 style="text-align: center;">Выберите обменник, в котором хотите внести изменения</h3>
+                <p><label  for="{{ form.ExchangePoints.id_for_label }}"> </label>{{ form.ExchangePoints }}</p>
+                {{ form.ExchangePoints.errors }}
+
+
+                {% if param2 == 0 or param2 == 2 %}
+                    <h3 style="text-align: center;">Выберите направление сделки, по которому хотите внести изменения</h3>
+                {% elif param2 == 1 or param2 == 3 %}
+                    <h3 style="text-align: center;">Выберите направление сделки, которое хотите удалить</h3>
+                {% endif %}
+
+{#                <p><label  for="{{ form.chosen_deals.id_for_label }}"> </label>{{ form.chosen_deals }}</p>#}
+{#                {{ form.chosen_deals.errors }}#}
+
+{#                <p>Выберите направление сделки</p>#}
+                    <p><div style="text-align: center;"><label  for="{{ form.Currency_to_sell.id_for_label }}"> </label>{{ form.Currency_to_sell }} &nbsp=>&nbsp <label  for="{{ form.Currency_to_buy.id_for_label }}"> </label>{{ form.Currency_to_buy }}</div></p>
+                    <div style="text-align: center;" >{{ form.Currency_to_buy.errors }}</div>
+                    <div style="text-align: center;" >{{ form.Currency_to_sell.errors }}</div>
+
+                <p>Выберите тип перевода отдаваемой валюты</p>
+                    <p><div style="text-align: center;"><label  for="{{ form.Pay_type_sell.id_for_label }}"> </label>{{ form.Pay_type_sell }}</div></p>
+                    <div style="text-align: center;" >{{ form.Pay_type_sell.errors }}</div>
+{#                    <p><div style="text-align: center;"><label  for="{{ form.FinOfficeFrom.id_for_label }}"> </label>{{ form.FinOfficeFrom }}</div></p>#}
+{#                    <div style="text-align: center;" >{{ form.FinOfficeFrom.errors }}</div>#}
+
+                <p>Выберите тип перевода получаемой валюты</p>
+                    <p><div style="text-align: center;"><label  for="{{ form.Pay_type_buy.id_for_label }}"> </label>{{ form.Pay_type_buy }}</div></p>
+                    <div style="text-align: center;" >{{ form.Pay_type_buy.errors }}</div>
+{#                    <p><div style="text-align: center;"><label  for="{{ form.FinOfficeTo.id_for_label }}"> </label>{{ form.FinOfficeTo }}</div></p>#}
+{#                    <div style="text-align: center;" >{{ form.FinOfficeTo.errors }}</div>#}
+
+            </div>
+
+
+            <div style="text-align:center; "><button type="submit">Применить изменения</button></div>
+            <br>
+            </form>
+
+
+    <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'general_settings_change_exchange_structure' exch_name %}">Вернуться к настройке орг. структуры обменника</a> </button></div>
+
+</body>
+</html>

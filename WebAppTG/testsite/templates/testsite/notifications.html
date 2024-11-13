@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Уведомления</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 39 0 %}">Поддержка и обратная связь</a> </button> </div>
+
+        <div style="text-align: center">
+
+                <h1>Уведомления</h1>
+                <br>
+
+                {% for Notification in Notifications %}
+                    <p> {{ Notification.NoticeDate }}</p>
+                    {% if Notification.Unread == False %}
+                        <p style="background-color:lightpink"> {{ Notification.Text|safe }}</p>
+                    {% else %}
+                        <p> {{ Notification.Text|safe }}</p>
+
+                    {% endif %}
+                    <hr style="width:50%">
+
+
+                {% endfor %}
+        <br>
+
+            <button style=" font-size: 14px">  <a href="{% url 'home' usertype %}">Главное меню</a> </button>
+        </div>
+    {% endif %}
+</body>
+</html>

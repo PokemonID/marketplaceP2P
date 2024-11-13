@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Общие настройки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 26 0 %}">Поддержка и обратная связь</a> </button> </div>
+        <div style="text-align: center">
+            <h1> Общие настройки</h1>
+            <br>
+
+            <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'general_settings_personal' %}">Изменение персональных данных</a> </button>
+            <br>
+            {% if param == 0 %}
+                <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'general_settings_pccntr' %}">Изменение наименования Центра прибыли и затрат</a> </button>
+                <br>
+            {% endif %}
+
+            {% if param == 0 %}
+                <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'general_settings_exchange_points' %}">Настройка обменника(-ов)</a> </button>
+                <br>
+            {% else %}
+                <button style=" font-size: 20px; margin-bottom:40px">  <a href="{% url 'general_settings_exchange_points' %}">Настройка обменника</a> </button>
+                <br>
+            {% endif %}
+
+            {% if param == 0 %}
+                <button style=' font-size: 10px'>  <a href="{% url 'home' usertype %}">Главное меню</a> </button></div>
+                <br>
+            {% else %}
+                <button style=' font-size: 10px'>  <a href="{% url 'home' ExchangeName %}">Главное меню</a> </button></div>
+                <br>
+            {% endif %}
+
+
+
+        </div>
+    {% endif %}
+</body>
+</html>

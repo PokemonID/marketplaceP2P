@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <style>
+   .text {
+    text-align:  center;
+   }
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+{% block content %}
+<div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 33 0 %}">Поддержка и обратная связь</a> </button> </div>
+
+    {% if request.user.is_authenticated %}
+        {% if pcc_name == '' %}
+            <h1 style="text-align: center;">Вывод средств</h1>
+        {% else %}
+            <h1 style="text-align: center;">Вывод средств обменника {{ pcc_name }}</h1>
+        {% endif %}
+        {% if error != "" %}
+            <h4 style="color:red ;text-align: center;">{{ error }}</h4>
+        {% endif %}
+        <form action="{% url 'balance_settings_withdraw_funds' %}" method="post">
+
+            {% csrf_token %}
+
+
+{#            {% if usertype == "PART" %}#}
+{#                <h3 style="text-align: center;">Выберите обменник</h3>#}
+{#                <p><div style="text-align: center;"><label  for="{{ form.PCCNTRs.id_for_label }}"> </label>{{ form.PCCNTRs }}</div>#}
+{#                <div style="text-align: center;" >{{ form.PCCNTRs.errors }}</div>#}
+{#            {% endif %}#}
+
+            <h3 style="text-align: center;">Выберите блокчейн для перевода</h3>
+            <p><div style="text-align: center;"><label  for="{{ form.Blockchain_transfer.id_for_label }}"> </label>{{ form.Blockchain_transfer }}</div>
+            <div style="text-align: center;" >{{ form.Blockchain_transfer.errors }}</div>
+
+            <h3 style="text-align: center;">Укажите сумму для вывода</h3>
+            <p><div style="text-align: center;"><label  for="{{ form.balance_Amount.id_for_label }}"> </label>{{ form.balance_Amount }}</div>
+            <div style="text-align: center;" >{{ form.balance_Amount.errors }}</div>
+
+            <h3 style="text-align: center;">Укажите данные платежа для перевода</h3>
+            <p><div style="text-align: center;"><label  for="{{ form.Payment_code.id_for_label }}"> </label>{{ form.Payment_code }}</div>
+            <div style="text-align: center;" >{{ form.Payment_code.errors }}</div>
+            <br>
+
+            <div style="text-align:center; "><button type="submit">Отправить заявку на вывод средств</button></div>
+            <br>
+        </form>
+
+        <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'balance_settings' %}">Вернуться к "Балансу и бонусам"</a> </button></div>
+    {% endif %}
+ {% endblock %}
+ </body>
+</html>

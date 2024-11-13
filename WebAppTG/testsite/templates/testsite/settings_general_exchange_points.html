@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+ <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 12 0 %}">Поддержка и обратная связь</a> </button> </div>
+    <div style="text-align: center;" >
+        <h1>Настройка обменников</h1>
+        <h3>Если наименование обменника выделено красным - по данному обменнику отсутствует информация по направлениям сделки и нормам прибыльности</h3>
+        {% for EP in ExchangePoints %}
+            {% if EP in ExchangePointswithTransfers %}
+                <p>{{ EP }}</p>
+                {#<button style='font-size: 10px'>  <a href="{% url 'general_settings_exchange_deals_add_new' EP %}">Добавить направления сделок и нормы прибыльности</a></button>#}
+                <button style=' font-size: 10px'>  <a href="{% url 'general_settings_change_exchange_structure' EP %}">Изменить орг. структуру обменника</a></button>
+                <br>
+            {% else %}
+                <p >{{ EP }}</p>
+                {# <button style='background-color: #FF0000; font-size: 10px'>  <a href="{% url 'general_settings_exchange_deals_new' EP %}">Добавить направления сделок и нормы прибыльности</a></button> #}
+                <button style='background-color: #FF0000; font-size: 10px'>  <a href="{% url 'general_settings_change_exchange_structure' EP %}">Изменить орг. структуру обменника</a></button>
+                <br>
+            {% endif %}
+        {% endfor %}
+    <br>
+
+
+    {% if param == 1 %}
+
+        <button style=' font-size: 20px; margin-bottom:40px'>  <a href="{% url 'general_settings_change_exchange_rate_source' %}">Изменить источники курсов валют</a></button>
+        <br>
+    {% endif %}
+
+    {% if param3 == 0 %}
+        <button style=' font-size: 20px; margin-bottom:40px'>  <a href="{% url 'general_settings_exchange_structure_new_1' %}">Добавить новый обменник</a></button>
+        <br>
+    {% endif %}
+
+
+
+
+        <button style=' font-size: 10px'>  <a href="{% url 'general_settings' %}">Вернуться к общим настройкам</a> </button>
+    </div>
+
+</body>
+</html>

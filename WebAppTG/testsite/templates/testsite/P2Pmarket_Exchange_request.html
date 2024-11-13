@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 37 Order.num %}">Поддержка и обратная связь</a> </button>
+    <p> Доступно: {{ balance }} USDT</div>
+        <h1><div style="text-align: center; ">Оформление предложения на обмен</div></h1>
+
+        {% if error != "" %}
+            <h4 style="color:red ;text-align: center;">{{ error }}</h4>
+        {% endif %}
+
+
+        <div style="text-align: center">
+            <div style="text-align: center">
+                <h3 style="color:dodgerblue">Заявка №{{ Order.num }} </h3>
+                <p><span style="font-weight:800">Статус заявки:</span> {{ Order.Status }}</p>
+                <p><span style="font-weight:800">Сделка по обмену:</span> {{ Order.ExchangeType }} </p>
+                <p><span style="font-weight:800">Тип перевода и метод оплаты отдаваемой валюты:</span> {{ Order.SendTransferType }} - {{ Order.FinOfficeFrom }} </p>
+                <p><span style="font-weight:800">Тип перевода и метод оплаты получаемой валюты:</span> {{ Order.ReceiveTransferType }} - {{ Order.FinOfficeTo }} </p>
+                <p><span style="font-weight:800">Время сделки:</span> {{ Order.OrderDate }}, {{ Order.TimeInterval }} </p>
+                <p><span style="font-weight:800">Место сделки:</span> {{ Order.Country }}, {{ Order.City }} </p>
+                <p><span style="font-weight:800">Способ доставки:</span> {{ Order.DeliveryType }}</p>
+                {% if Order.OrderLimit is not None %}
+                    <p><span style="font-weight:800">Лимит сделки:</span> {{ Order.OrderLimit }} {{ Order.SendCurrencyISO }} </p>
+                {% endif %}
+                {% if Order.Comment != '' %}
+                    <p><span style="font-weight:800">Комментарии к сделке:</span> {{ Order.Comment }} </p>
+                {% endif %}
+
+                <br>
+                <form action="{% url 'P2Pmarket_Exchange_request' Order.num %}" method="post">
+                    {% csrf_token %}
+
+                    {% if amount_type == 'send' %}
+                        <p style="font-weight:800">Курс валюты с учетом указанного источника и нормы прибыльности ({{ max_percent }}%):</p>
+                        <p>1 {{ currency_to_sell }} => {{ form.exchange_rate }} {{ currency_to_buy }} </p>
+                        <p>1 {{ currency_to_buy }} => {{ form.reverse_exchange_rate }} {{ currency_to_sell }}</p>
+                        <p><span style="font-weight:800">Стоимость обмена:</span> {{ Order.SendAmount }} => {{ form.amount }} {{ currency_to_buy }} </p>
+                        <script>
+                            let SendAmount = "{{ Order.SendAmount|escapejs }}".split(" ");
+                            let rounded = (num, decimals) => Number(num.toFixed(decimals));
+                            var amount = document.getElementById('id_amount');
+                            var exchange_rate = document.getElementById('id_exchange_rate');
+                            var reverse_exchange_rate = document.getElementById('id_reverse_exchange_rate');
+                            amount.addEventListener('input', function (event) {
+                                {#console.log(parseFloat(amount.value.replace(',','.')));#}
+                                {#console.log(SendAmount[0]);#}
+                                document.getElementById('id_exchange_rate').value = rounded(parseFloat(amount.value.replace(',','.'))/SendAmount[0],5);
+                                document.getElementById('id_reverse_exchange_rate').value = rounded(1/rounded(parseFloat(amount.value.replace(',','.'))/SendAmount[0],5),5);
+                            })
+
+                            exchange_rate.addEventListener('input', function (event) {
+                                {#console.log(parseFloat(exchange_rate.value.replace(',','.')));#}
+                                {#console.log(SendAmount[0]);#}
+                                document.getElementById('id_amount').value = rounded(parseFloat(exchange_rate.value.replace(',','.'))*SendAmount[0],2);
+                                document.getElementById('id_reverse_exchange_rate').value = rounded(1/rounded(parseFloat(exchange_rate.value.replace(',','.')),5),5);
+                            })
+
+                            reverse_exchange_rate.addEventListener('input', function (event) {
+                                {#console.log(parseFloat(exchange_rate.value.replace(',','.')));#}
+                                {#console.log(SendAmount[0]);#}
+                                document.getElementById('id_exchange_rate').value = rounded(1/rounded(parseFloat(reverse_exchange_rate.value.replace(',','.')),5),5);
+                                document.getElementById('id_amount').value = rounded(rounded(1/rounded(parseFloat(reverse_exchange_rate.value.replace(',','.')),5),5)*SendAmount[0],2);
+                            })
+                        </script>
+
+                    {% elif amount_type == 'receive' %}
+                        <p style="font-weight:800">Курс валюты с учетом указанного источника и нормы прибыльности ({{ max_percent }}%):</p>
+                        <p>1 {{ currency_to_sell }} => {{ form.exchange_rate }} {{ currency_to_buy }} </p>
+                        <p>1 {{ currency_to_buy }} => {{ form.reverse_exchange_rate }} {{ currency_to_sell }}</p>
+                        <p><span style="font-weight:800">Стоимость обмена:</span> {{ form.amount }} {{ currency_to_sell }} => {{ Order.ReceiveAmount }} </p>
+                        <script>
+                            let ReceiveAmount = "{{ Order.ReceiveAmount|escapejs }}".split(" ");
+                            let max_percent = parseFloat("{{ max_percent|escapejs }}");
+                            let rounded = (num, decimals) => Number(num.toFixed(decimals));
+                            var amount = document.getElementById('id_amount');
+                            var exchange_rate = document.getElementById('id_exchange_rate');
+                            var reverse_exchange_rate = document.getElementById('id_reverse_exchange_rate');
+
+                            amount.addEventListener('input', function (event) {
+                                {#console.log(parseFloat(amount.value.replace(',','.')));#}
+                                {#console.log(ReceiveAmount[0]);#}
+                                document.getElementById('id_exchange_rate').value = rounded(ReceiveAmount[0]/parseFloat(amount.value.replace(',','.')),5);
+                                document.getElementById('id_reverse_exchange_rate').value = rounded(1/rounded(ReceiveAmount[0]/parseFloat(amount.value.replace(',','.')),5),5);
+                            })
+
+
+                            exchange_rate.addEventListener('input', function (event) {
+                                {#console.log(parseFloat(exchange_rate.value.replace(',','.')));#}
+                                {#console.log(ReceiveAmount[0]);#}
+                                document.getElementById('id_amount').value = rounded(ReceiveAmount[0]/parseFloat(exchange_rate.value.replace(',','.')),2);
+                                document.getElementById('id_reverse_exchange_rate').value = rounded(1/rounded(parseFloat(exchange_rate.value.replace(',','.')),5),5);
+                            })
+
+                            reverse_exchange_rate.addEventListener('input', function (event) {
+                                {#console.log(parseFloat(exchange_rate.value.replace(',','.')));#}
+                                {#console.log(SendAmount[0]);#}
+                                document.getElementById('id_exchange_rate').value = rounded(1/rounded(parseFloat(reverse_exchange_rate.value.replace(',','.')),5),5);
+                                document.getElementById('id_amount').value = rounded(ReceiveAmount[0]*parseFloat(reverse_exchange_rate.value.replace(',','.')),2);
+                            })
+                        </script>
+                    {% endif %}
+
+                    <button style=' font-size: 10px' type='submit'>Отправить предложение</button>
+                    <button style=' font-size: 10px'>  <a href="{% url 'P2Pmarket_Bulletin_board' %}">Вернуться к "Доске объявлений"</a> </button>
+                </form>
+            </div>
+
+
+        </div>
+    {% endif %}
+</body>
+</html>

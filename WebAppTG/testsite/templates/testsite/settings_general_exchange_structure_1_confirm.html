@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <style>
+   .text {
+    text-align:  center;
+   }
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+{% block content %}
+        <h1 style="text-align: center;">Настройка орг. структуры обменника</h1>
+
+        {% if param == 1 %}
+            <p style="text-align: center;">Выбор организатора обменника</p>
+        {% else %}
+            <p style="text-align: center;">Изменение организатора обменника</p>
+        {% endif %}
+        <div style="text-align: center;">
+            <h3>Пользователь {{ username }} найден в системе. Вы подтверждаете выбор аккаунта (требуется подтверждение через эл. почту указанного пользователя)?</h3>
+        </div>
+
+        {% if param == 1 %}
+            <div style="text-align:center; "><button style="background-color: lawngreen; font-size: 27px">  <a href="{% url 'general_settings_exchange_structure_new_1_confirm' 2 %}">Да</a> </button> <button style="background-color: orangered; font-size: 27px"><a href="{% url 'general_settings_exchange_structure_new_1' %}">Нет</a> </button></div>
+        {% else %}
+            <div style="text-align:center; "><button style="background-color: lawngreen; font-size: 27px">  <a href="{% url 'general_settings_exchange_structure_new_1_confirm' 3 %}">Да</a> </button> <button style="background-color: orangered; font-size: 27px"><a href="{% url 'general_settings_change_exchange_structure_1' %}">Нет</a> </button></div>
+        {% endif %}
+
+ {% endblock %}
+ </body>
+</html>

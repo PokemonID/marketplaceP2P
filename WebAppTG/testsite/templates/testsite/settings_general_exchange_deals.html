@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+ 
+{% if param == 0 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 10 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% elif param == 1 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 20 exch_code %}">Поддержка и обратная связь</a> </button> </div>
+{% elif param == 2 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 23 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% elif param == 3 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 40 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% elif param == 4 %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 42 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% endif %}
+
+
+ {% if param == 0 %}
+    <h1 style="text-align: center;">Настройка направлений сделок обменника {{ exch_name }}</h1>
+
+{% elif param == 1 %}
+    <h1 style="text-align: center;">Настройка направлений сделок</h1>
+    <h3 style="text-align: center;">Выбранный обменник</h3>
+    <p style="text-align: center;">{{ EP }}</p>
+
+    <h3 style="text-align: center;">Выбранное направление сделок</h3>
+    <p style="text-align: center;">{{ Deals }}</p>
+    <br>
+
+{% elif param == 2 %}
+    <h1 style="text-align: center;">Настройка направлений сделок обменника {{ exch_name }}</h1>
+    <h3 style="text-align: center;">Направления сделок, которые проводятся в обменнике </h3>
+    {% for deal in Deals %}
+        <p style="text-align: center;">{{ deal }}</p>
+    {% endfor %}
+    <br>
+
+ {% elif param == 3 %}
+    <h1 style="text-align: center;">Настройка скидок обменника {{ exch_name }}</h1>
+    <h3 style="text-align: center;">Направления сделок, по которым применяется скидочная программа</h3>
+    {% for deal in Deals %}
+        <p style="text-align: center;">{{ deal }}</p>
+    {% endfor %}
+    <br>
+
+{% elif param == 4 %}
+    <h1 style="text-align: center;">Настройка cкидок обменника</h1>
+{% endif %}
+
+    {% if error != "" %}
+    <h4 style="text-align: center; color:red">{{ error }}</h4>
+    {% endif %}
+
+    {% if param == 0 %}
+        <form action="{% url 'general_settings_exchange_deals_new' %}" method="post">
+
+    {% elif param == 1 %}
+        <form action="{% url 'general_settings_change_exchange_deals_2'  %}" method="post">
+
+    {% elif param == 2 %}
+        <form action="{% url 'general_settings_exchange_deals_add_new' %}" method="post">
+
+    {% elif param == 3 %}
+        <form action="{% url 'general_settings_exchange_deals_bonus_add_new' %}" method="post">
+
+    {% elif param == 4 %}
+        <form action="{% url 'general_settings_change_exchange_deals_bonus_2' %}" method="post">
+{#            {% if exch_name == "all" %}#}
+{#                <h3 style="text-align: center;">Направления сделок ранее добавленные по обменникам (тип сделки - обменники)</h3>#}
+{#                {% for PandD in PointsandDeals %}#}
+{#                    <h5 style="text-align: center;">{{ PandD }}</h5>#}
+{#                {% endfor %}#}
+{#                <h3 style="text-align: center;">Выберите обменники, по которым хотите внести изменения</h3>#}
+{#                <p><div style="text-align: center;"><label  for="{{ form.ExchangePoints.id_for_label }}"> </label>{{ form.ExchangePoints }}</div>#}
+{#                <div style="text-align: center;" >{{ form.ExchangePoints.errors }}</div>#}
+{#            {% else %}#}
+{#                <h3 style="text-align: center;">Направления сделок ранее добавленные по данному обменнику</h3>#}
+{#                {% for deal in ExchPDeals %}#}
+{#                    <h5 style="text-align: center;">{{ deal }}</h5>#}
+{#                {% endfor %}#}
+{#        {% endif %}#}
+
+{#            <h3 style="text-align: center;">Для изменения данных по имеющимся направлениям выберите в списке ниже нужные направления</h3>#}
+    {% endif %}
+
+        {% csrf_token %}
+
+        <div style="text-align: center;">
+            {% if param == 0 or param == 2 or param == 3 %}
+{#                <p><label  for="{{ form.chosen_deals.id_for_label }}">{{ form.chosen_deals.label }}: </label>{{ form.chosen_deals }}</p>#}
+{#                <div style="text-align: center;" >{{ form.chosen_deals.errors }}</div>#}
+                <p>Выберите направление сделки</p>
+                    <p><div style="text-align: center;"><label  for="{{ form.Currency_to_sell.id_for_label }}"> </label>{{ form.Currency_to_sell }} &nbsp=>&nbsp <label  for="{{ form.Currency_to_buy.id_for_label }}"> </label>{{ form.Currency_to_buy }}</div></p>
+                    <div style="text-align: center;" >{{ form.Currency_to_buy.errors }}</div>
+                    <div style="text-align: center;" >{{ form.Currency_to_sell.errors }}</div>
+
+                <p>Выберите тип перевода отдаваемой валюты</p>
+                    <p><div style="text-align: center;"><label  for="{{ form.Pay_type_sell.id_for_label }}"> </label>{{ form.Pay_type_sell }}</div></p>
+                    <div style="text-align: center;" >{{ form.Pay_type_sell.errors }}</div>
+{#                    <p><div style="text-align: center;"><label  for="{{ form.FinOfficeFrom.id_for_label }}"> </label>{{ form.FinOfficeFrom }}</div></p>#}
+{#                    <div style="text-align: center;" >{{ form.FinOfficeFrom.errors }}</div>#}
+
+                <p>Выберите тип перевода получаемой валюты</p>
+                    <p><div style="text-align: center;"><label  for="{{ form.Pay_type_buy.id_for_label }}"> </label>{{ form.Pay_type_buy }}</div></p>
+                    <div style="text-align: center;" >{{ form.Pay_type_buy.errors }}</div>
+{#                    <p><div style="text-align: center;"><label  for="{{ form.FinOfficeTo.id_for_label }}"> </label>{{ form.FinOfficeTo }}</div></p>#}
+{#                    <div style="text-align: center;" >{{ form.FinOfficeTo.errors }}</div>#}
+
+            {% endif %}
+
+            {% if param == 0 or param == 1 or param == 2 %}
+
+                <p><label  for="{{ form.Min_amount.id_for_label }}">{{ form.Min_amount.label }}: </label>{{ form.Min_amount }}</p>
+                <div style="text-align: center;" >{{ form.Min_amount.errors }}</div>
+
+                <p><label  for="{{ form.Max_amount.id_for_label }}">{{ form.Max_amount.label }}: </label>{{ form.Max_amount }}</p>
+                <div style="text-align: center;" >{{ form.Max_amount.errors }}</div>
+
+                <p><label  for="{{ form.Norm_Prib_Name_1_1.id_for_label }}"> {{ form.Norm_Prib_Name_1_1.label }}: </label>{{ form.Norm_Prib_Name_1_1 }}  <label  for="{{ form.Norm_Prib_Name_1_2.id_for_label }}"> - </label>{{ form.Norm_Prib_Name_1_2 }}  <label  for="{{ form.Norm_Prib_Percent_1.id_for_label }}">&nbsp&nbsp{{ form.Norm_Prib_Percent_1.label }}: </label>{{ form.Norm_Prib_Percent_1 }}</p>
+                <div style="text-align: center;" >{{ form.Norm_Prib_Name_1_1.errors }}</div>
+                <div style="text-align: center;" >{{ form.Norm_Prib_Name_1_2.errors }}</div>
+                <div style="text-align: center;" >{{ form.Norm_Prib_Percent_1.errors }}</div>
+
+                <p><label> {{ form.Norm_Prib_Name_2_1.label }}: </label>{{ form.Norm_Prib_Name_2_1 }}
+                    <label> - </label>{{ form.Norm_Prib_Name_2_2 }}
+                    <label>&nbsp&nbsp{{ form.Norm_Prib_Percent_2.label }}: </label>{{ form.Norm_Prib_Percent_2 }}</p>
+                <div style="text-align: center;" >{{ form.Norm_Prib_Name_2_1.errors }}</div>
+                <div style="text-align: center;" >{{ form.Norm_Prib_Name_2_2.errors }}</div>
+                <div style="text-align: center;" >{{ form.Norm_Prib_Percent_2.errors }}</div>
+
+                <p><label  for="{{ form.Norm_Prib_Name_3_1.id_for_label }}"> {{ form.Norm_Prib_Name_3_1.label }}: </label>{{ form.Norm_Prib_Name_3_1 }}  <label  for="{{ form.Norm_Prib_Name_3_2.id_for_label }}"> - </label>{{ form.Norm_Prib_Name_3_2 }}  <label  for="{{ form.Norm_Prib_Percent_3.id_for_label }}">&nbsp&nbsp{{ form.Norm_Prib_Percent_3.label }}: </label>{{ form.Norm_Prib_Percent_3 }}</p>
+                <div style="text-align: center;" >{{ form.Norm_Prib_Name_3_1.errors }}</div>
+                <div style="text-align: center;" >{{ form.Norm_Prib_Name_3_2.errors }}</div>
+                <div style="text-align: center;" >{{ form.Norm_Prib_Percent_3.errors }}</div>
+
+            {% else %}
+                <p><label> {{ form.Usdt_or_eur.label }}: </label>{{ form.Usdt_or_eur }}</p>
+                <div style="text-align: center;" >{{ form.Usdt_or_eur.errors }}</div>
+
+                <p><label> {{ form.Bonus_Name_1_1.label }}: </label>{{ form.Bonus_Name_1_1 }}
+                    <label> - </label>{{ form.Bonus_Name_1_2 }}
+                    <label >&nbsp&nbsp{{ form.Bonus_Percent_1.label }}: </label>{{ form.Bonus_Percent_1 }}</p>
+                <div style="text-align: center;" >{{ form.Bonus_Name_1_1.errors }}</div>
+                <div style="text-align: center;" >{{ form.Bonus_Name_1_2.errors }}</div>
+                <div style="text-align: center;" >{{ form.Bonus_Percent_1.errors }}</div>
+
+                <p><label> {{ form.Bonus_Name_2_1.label }}: </label>{{ form.Bonus_Name_2_1 }}
+                    <label> - </label>{{ form.Bonus_Name_2_2 }}
+                    <label>&nbsp&nbsp{{ form.Bonus_Percent_2.label }}: </label>{{ form.Bonus_Percent_2 }}</p>
+                <div style="text-align: center;" >{{ form.Bonus_Name_2_1.errors }}</div>
+                <div style="text-align: center;" >{{ form.Bonus_Name_2_2.errors }}</div>
+                <div style="text-align: center;" >{{ form.Bonus_Percent_2.errors }}</div>
+
+                <p><label> {{ form.Bonus_Name_3_1.label }}: </label>{{ form.Bonus_Name_3_1 }}
+                    <label> - </label>{{ form.Bonus_Name_3_2 }}
+                    <label>&nbsp&nbsp{{ form.Bonus_Percent_3.label }}: </label>{{ form.Bonus_Percent_3 }}</p>
+                <div style="text-align: center;" >{{ form.Bonus_Name_3_1.errors }}</div>
+                <div style="text-align: center;" >{{ form.Bonus_Name_3_2.errors }}</div>
+                <div style="text-align: center;" >{{ form.Bonus_Percent_3.errors }}</div>
+            {% endif %}
+
+        </div>
+
+
+        <div style="text-align:center; "><button type="submit">Применить изменения</button></div>
+        <br>
+        </form>
+
+    {% if param == 0 %}
+        <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'delete_empl' %}">Вернуться к выбору сотрудника обменника</a> </button></div>
+    {% elif param == 1 %}
+        <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'general_settings_change_exchange_deals_1' %}">Вернуться к выбору обменника и направлений сделок</a> </button></div>
+    {% elif param == 2 or param == 3 %}
+        <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'general_settings_change_exchange_structure' exch_name %}">Вернуться к настройке орг. структуры обменника</a> </button></div>
+    {% elif param == 4 %}
+        <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'balance_settings'  %}">Вернуться к "Балансу и бонусам"</a> </button></div>
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 44 0 %}">Поддержка и обратная связь</a> </button> </div>
+        <div style="text-align: center">
+            {% if ContactType == "CLI" %}
+                <h1>Мои сделки</h1>
+            {% else %}
+                <h1>Сделки</h1>
+            {% endif %}
+
+            <div style="text-align: center">
+                {% for Order in Orders.values %}
+                        <h3 style="color:dodgerblue">Сделка №{{ Order.num }} </h3>
+                        <p><span style="font-weight:800">Статус заявки:</span> {{ Order.Status }}</p>
+                        <p><span style="font-weight:800">Сделка по обмену:</span> {{ Order.ExchangeType }} </p>
+                        <p><span style="font-weight:800">Стоимость обмена:</span> {{ Order.SendAmount }} => {{ Order.ReceiveAmount }}  </p>
+                        <p><span style="font-weight:800">Тип перевода и метод оплаты отдаваемой валюты:</span> {{ Order.SendTransferType }} - {{ Order.FinOfficeFrom }} </p>
+                        <p><span style="font-weight:800">Тип перевода и метод оплаты получаемой валюты:</span> {{ Order.ReceiveTransferType }} - {{ Order.FinOfficeTo }} </p>
+                        <p><span style="font-weight:800">Время сделки:</span> {{ Order.OrderDate }}, {{ Order.TimeInterval }} </p>
+                        <p><span style="font-weight:800">Место сделки:</span> {{ Order.Country }}, {{ Order.City }} </p>
+                        <p><span style="font-weight:800">Способ доставки:</span> {{ Order.DeliveryType }}</p>
+                        {% if Order.OrderLimit is not None %}
+                            <p><span style="font-weight:800">Лимит сделки:</span> {{ Order.OrderLimit }} {{ Order.SendCurrencyISO }} </p>
+                        {% endif %}
+                        {% if Order.Comment != '' %}
+                            <p><span style="font-weight:800">Комментарии к сделке:</span> {{ Order.Comment }} </p>
+                        {% endif %}
+
+
+                        {% if ContactType == "CLI" and Order.Status == 'План' %}
+                            <button style=' font-size: 10px; margin-bottom:20px'>  <a href="{% url 'room' Order.num %}">Перейти к чату сделки</a></button> <button style=' font-size: 10px; margin-bottom:20px'>  <a href="{% url 'P2Pmarket_Bulletin_board_delete_confirm' Order.num %}">Удалить заявку</a></button>
+
+                        {% else %}
+                            <button style=' font-size: 10px; margin-bottom:20px'>  <a href="{% url 'room' Order.num %}">Перейти к чату сделки</a></button>
+
+{#                        {% elif ContactType != "CLI" and Order.Status == 'Создан' and Order.num in orders_with_requests_id and EP_with_requests not in EPID %}#}
+{#                            <button style=' font-size: 10px; margin-bottom:20px'>  <a href="{% url 'P2Pmarket_Exchange_request' Order.num %}">Отправить предложение</a></button>#}
+                        {% endif %}
+                     <hr style="width:50%">
+                {% endfor %}
+
+
+                <button style=' font-size: 10px'>  <a href="{% url 'P2Pmarket' %}">Вернуться к "Покупке на P2P маркете"</a> </button>
+            </div>
+
+        </div>
+    {% endif %}
+</body>
+</html>

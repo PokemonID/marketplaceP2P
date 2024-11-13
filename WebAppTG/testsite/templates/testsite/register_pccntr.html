@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{  title }}</title>
+  <style>
+   .text {
+    text-align:  center;
+   }
+  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+ 
+ {% if param == 0 %}
+ <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 6 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% else %}
+<div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 24 0 %}">Поддержка и обратная связь</a> </button> </div>
+{% endif %}
+ {% block content %}
+    {% if request.user.is_authenticated %}
+
+        {% if param == 0 %}
+            <h1 style="text-align: center;">Регистрация Центра прибыли и затрат</h1>
+            <form action="{% url 'register_pccntr' %}" method="post">
+        {% else %}
+            <h1 style="text-align: center;">Редактирование наименования Центра прибыли и затрат</h1>
+            <form action="{% url 'general_settings_pccntr' %}" method="post">
+        {% endif %}
+
+        {% if error != "" %}
+            <h4 style="color:red; text-align: center;">{{ error }}</h4>
+        {% endif %}
+
+            {% csrf_token %}
+
+            {% for f in form %}
+                <p><div style="text-align: center;"><label  for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</div></p>
+                <div style="text-align: center;" >{{ f.errors }}</div>
+            {% endfor %}
+
+            {% if param == 0 %}
+                <div style="text-align:center; "><button type="submit">Перейти к настройке орг. структуры</button></div>
+                
+            {% else %}
+                <div style="text-align:center; "><button type="submit">Применить изменения</button></div>
+            {% endif %}
+
+            <br>
+        </form>
+        {% if param == 1  and usertype == 'Клиент' %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'home' usertype %}">Главное меню</a> </button></div>
+        {% elif param == 1 %}
+            <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'general_settings' %}">Вернуться к общим настройкам</a> </button></div>
+        {% elif param == 0 %}
+        <br>
+        <div style="text-align:center; "><button style=' font-size: 10px'>  <a href="{% url 'delete_user_2' %}">Вернуться к заполнению персональных данных</a> </button> </div>
+        {% endif %}
+    {% endif %}
+ {% endblock %}
+ </body>
+</html>

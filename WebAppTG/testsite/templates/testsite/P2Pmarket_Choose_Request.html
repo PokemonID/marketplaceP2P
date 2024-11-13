@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body background-color="#ffffff">
+    {% if request.user.is_authenticated %}
+    <div style="text-align:right; ">   <button style=' font-size: 10px'>  <a href="{% url 'feedback' 43 num %}">Поддержка и обратная связь</a> </button> </div>
+        <div style="text-align: center">
+            <h1>Предложения обменников по заявке на обмен № {{ Order.num }}</h1>
+
+
+            <div style="text-align: center">
+                <p><span style="font-weight:800">Сделка по обмену:</span> {{ Order.ExchangeType }} </p>
+                <p><span style="font-weight:800">Тип перевода и метод оплаты отдаваемой валюты:</span> {{ Order.SendTransferType }} - {{ Order.FinOfficeFrom }} </p>
+                <p><span style="font-weight:800">Тип перевода и метод оплаты получаемой валюты:</span> {{ Order.ReceiveTransferType }} - {{ Order.FinOfficeTo }} </p>
+                <p><span style="font-weight:800">Время сделки:</span> {{ Order.OrderDate }}, {{ Order.TimeInterval }} </p>
+                <p><span style="font-weight:800">Место сделки:</span> {{ Order.Country }}, {{ Order.City }} </p>
+                <p><span style="font-weight:800">Способ доставки:</span> {{ Order.DeliveryType }}</p>
+                {% if Order.OrderLimit is not None %}
+                    <p><span style="font-weight:800">Лимит сделки:</span> {{ Order.OrderLimit }} {{ Order.SendCurrencyISO }} </p>
+                {% endif %}
+                {% if Order.Comment != '' %}
+                    <p><span style="font-weight:800">Комментарии к сделке:</span> {{ Order.Comment }} </p>
+                {% endif %}
+{#                <hr style="width:50%">#}
+                {% if Not_active_requests != 0 %}
+                    <h3 style="color:Red"> По данной заявке есть предложения без подтверждения изменений</h3>
+                {% endif %}
+                <br>
+
+                {% for Request in Requests %}
+                    <h3 style="color:dodgerblue">Предложение №{{ Request.pk }} </h3>
+                    <p><span style="font-weight:800">Наименование обменника:</span> {{ Request.ExchangePointName }} </p>
+                    <p><span style="font-weight:800">Курс:</span> 1 {{ Order.SendCurrencyISO }} => {{ Request.ExchangeRate }} {{ Order.ReceiveCurrencyISO }} </p>
+                    <p><span style="font-weight:800">Стоимость обмена:</span> {{ Request.SendAmount}} {{ Order.SendCurrencyISO }} => {{ Request.ReceiveAmount }} {{ Order.ReceiveCurrencyISO }} </p>
+                    <button style=' font-size: 10px'>  <a href="{% url 'chat' Request.pk %}">Принять предложение</a> </button>
+                    <hr style="width:50%">
+                {% endfor %}
+
+
+                <button style=' font-size: 10px'>  <a href="{% url 'P2Pmarket_Bulletin_board' %}">Вернуться к "Моим объявлениям"</a> </button>
+            </div>
+
+        </div>
+    {% endif %}
+</body>
+</html>
